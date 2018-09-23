@@ -1,4 +1,4 @@
-package com.shaneschulte.mc.clanarena;
+package com.shaneschulte.mc.clanarena.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,6 +17,7 @@ public class MsgUtils {
     public enum Colors {
         INFO('7'),
         WARNING('c'),
+        ERROR('c'),
         VARIABLE('e'),
         HIGHLIGHT('b'),
         ;
@@ -38,8 +39,12 @@ public class MsgUtils {
      * @param target the target you want to send the message to
      * @param message the message being sent
      */
-    static void sendMessage(CommandSender target, String message) {
+    static public void sendMessage (CommandSender target, String message) {
         target.sendMessage(colorMessage(prefix + Colors.INFO + message));
+    }
+
+    static public void error (CommandSender target, String message) {
+        target.sendMessage(colorMessage(prefix + Colors.ERROR + message));
     }
 
     /**
@@ -55,7 +60,7 @@ public class MsgUtils {
      * @param target the target you want to send the message to
      * @param message the message being sent
      */
-    static public void sendRawMessage (CommandSender target, String message) {
+    static public void raw (CommandSender target, String message) {
         target.sendMessage(Colors.INFO + colorMessage(message));
     }
 
@@ -63,7 +68,7 @@ public class MsgUtils {
      * Logs a message to the console
      * @param message the message to log to console
      */
-    static void logMessage(String message) {
+    public static void log(String message) {
         Bukkit.getLogger().info(prefix + message);
     }
 

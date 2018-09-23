@@ -1,6 +1,7 @@
 package com.shaneschulte.mc.clanarena;
 
 import com.shaneschulte.mc.clanarena.commands.Challenge;
+import com.shaneschulte.mc.clanarena.commands.Test;
 import com.shaneschulte.mc.clanarena.utils.CmdProperties;
 import com.shaneschulte.mc.clanarena.utils.MsgUtils;
 import org.bukkit.command.Command;
@@ -15,11 +16,18 @@ public class CommandHandler implements CommandExecutor {
 
     private static HashMap<String, CmdProperties> commandClasses = new HashMap<String, CmdProperties>();
 
+    /**
+     * Commands need to be registered here in order to work! Also put in plugin.yml pls
+     * any new command can simply implement CmdProperties and generate the needed values
+     */
     CommandHandler() {
-        // REGISTER BASE COMMANDS HERE
         registerArgument(new Challenge());
+        registerArgument(new Test());
     }
 
+    /**
+     * On base command (/clanarena, /ca, /arena)
+     */
     @Override
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
 
@@ -73,22 +81,30 @@ public class CommandHandler implements CommandExecutor {
                     }
                 } else {
                     //The argument doesn't exist.
-                    MsgUtils.error (sender, "(command does not exist)");
+                    MsgUtils.error (sender, "/ca " + MsgUtils.Colors.VARIABLE + args[0] + MsgUtils.Colors.ERROR + " is not a command");
                     return true;
                 }
             } else {
-                // Not enough arguments
-                MsgUtils.error (sender, "(show help here)");
-                MsgUtils.error (sender, "(try /ca challenge <name>)");
+                // Not enough arguments (show help here)
+                MsgUtils.raw(p, "&e-=-=-=- &7Availible &bClanArena &7Commands: &e-=-=-=-");
+                for (final Map.Entry<String, CmdProperties> entry : commandClasses.entrySet()) {
+                    if (p.hasPermission(entry.getValue().getPermission())) {
+                        MsgUtils.sendMessage(p, "/ca " + MsgUtils.Colors.VARIABLE + entry.getKey() + MsgUtils.Colors.INFO + ": " + entry.getValue().getHelpMessage());
+                    }
+                }
                 return true;
             }
         } else {
             // Sender isn't a player
-            MsgUtils.error (sender, "(not a player)");
+            MsgUtils.error (sender, "Sorry! No console commands are available yet :(");
             return true;
         }
     }
 
+    /**
+     * registers commands with their alises in the hashmap
+     * @param baseCmd The command with properties, uses command variable to register
+     */
     private void registerArgument(final CmdProperties baseCmd) {
         commandClasses.put(baseCmd.getCommand(), baseCmd);
     }

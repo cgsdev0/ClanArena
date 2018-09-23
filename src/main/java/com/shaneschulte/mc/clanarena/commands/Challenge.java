@@ -15,7 +15,7 @@ public class Challenge implements CmdProperties {
 
     @Override
     public String getCommand() {
-        return "challenge";
+        return "Challenge";
     }
 
     @Override
@@ -45,6 +45,6 @@ public class Challenge implements CmdProperties {
 
     @Override
     public String getUsage() {
-        return "/challenge <clan>";
+        return "/ca challenge <clan>";
     }
 }

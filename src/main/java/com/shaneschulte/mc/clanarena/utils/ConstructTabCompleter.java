@@ -16,7 +16,9 @@ public class ConstructTabCompleter implements TabCompleter {
      */
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] arguments) {
-        if (sender instanceof Player) {
+
+        // If only autocompleting base subcommands
+        if (arguments.length == 1 && sender instanceof Player) {
             Player p = (Player) sender;
 
             return CommandHandler.getListOfAllAvailableCommandsForACertainPlayer(p);

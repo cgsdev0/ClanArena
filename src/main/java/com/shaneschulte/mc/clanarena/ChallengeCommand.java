@@ -15,14 +15,14 @@ public class ChallengeCommand extends Command {
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
 
-        if (args.length != 2)
+        if (args.length != 1)
         {
             // invalid number of arguments
             return false;
         }
 
-        OfflinePlayer caller = Bukkit.getPlayer(UUID.fromString(args[0]));
-        OfflinePlayer target = Bukkit.getPlayer(UUID.fromString(args[1]));
+        OfflinePlayer caller = (OfflinePlayer) sender;
+        OfflinePlayer target = Bukkit.getPlayer(UUID.fromString(args[0]));
 
         if (target != null && target.isOnline())
         {

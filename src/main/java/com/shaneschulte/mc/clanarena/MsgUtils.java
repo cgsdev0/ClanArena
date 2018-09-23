@@ -6,14 +6,31 @@ import org.bukkit.command.CommandSender;
 
 public class MsgUtils {
 
-    // ClanArena prefix
+    /**
+     * ClanArena prefix
+     */
     private static String prefix = "&bClanArena&e> &r";
 
-    // Colors config
-    public interface Colors {
-        String
-            info = "&7",
-            warning = "&c";
+    /**
+     * Colors variable ex. Colors.HIGHLIGHT to highlight some text
+     */
+    public enum Colors {
+        INFO('7'),
+        WARNING('c'),
+        VARIABLE('e'),
+        HIGHLIGHT('b'),
+        ;
+
+        private final Character colorCode;
+
+        Colors (final Character colorCode) {
+            this.colorCode = colorCode;
+        }
+
+        @Override
+        public String toString() {
+            return '&' + colorCode.toString();
+        }
     }
 
     /**
@@ -22,7 +39,7 @@ public class MsgUtils {
      * @param message the message being sent
      */
     static void sendMessage(CommandSender target, String message) {
-        target.sendMessage(colorMessage(prefix + Colors.info + message));
+        target.sendMessage(colorMessage(prefix + Colors.INFO + message));
     }
 
     /**
@@ -30,7 +47,7 @@ public class MsgUtils {
      * @param message the message being sent to all players
      */
     static public void broadcastMessage (String message) {
-        Bukkit.getServer().broadcastMessage(colorMessage(prefix + Colors.info + message));
+        Bukkit.getServer().broadcastMessage(colorMessage(prefix + Colors.INFO + message));
     }
 
     /**
@@ -39,7 +56,7 @@ public class MsgUtils {
      * @param message the message being sent
      */
     static public void sendRawMessage (CommandSender target, String message) {
-        target.sendMessage(Colors.info + colorMessage(message));
+        target.sendMessage(Colors.INFO + colorMessage(message));
     }
 
     /**
@@ -55,7 +72,7 @@ public class MsgUtils {
      * @param message the message to be colored
      * @return the colored message
      */
-    private static String colorMessage(String message) {
+    static private String colorMessage(String message) {
         char colorCode = '&';
         return ChatColor.translateAlternateColorCodes(colorCode, message);
     }

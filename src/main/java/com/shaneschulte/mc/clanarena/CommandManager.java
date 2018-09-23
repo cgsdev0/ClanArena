@@ -9,7 +9,7 @@ public class CommandManager implements CommandExecutor {
     // base ClanArena command
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        ClanArena.messageManager.sendMessage(sender, "Welcome to ClanArena!");
+        MsgUtils.sendMessage(sender, "Welcome to ClanArena!");
         return true;
     }
 }

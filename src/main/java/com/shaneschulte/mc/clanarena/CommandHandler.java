@@ -9,6 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +24,23 @@ public class CommandHandler implements CommandExecutor {
     CommandHandler() {
         registerArgument(new Challenge());
         registerArgument(new Test());
+    }
+
+    /**
+     * Returns a list of all available commands that a certain player can use
+     * @param p the player in question
+     * @return the list of permissible commands
+     */
+    public static ArrayList<String> getListOfAllAvailableCommandsForACertainPlayer(Player p) {
+        ArrayList<String> list = new ArrayList<>();
+
+        for (final Map.Entry<String, CmdProperties> entry : commandClasses.entrySet()) {
+            if (p.hasPermission(entry.getValue().getPermission())) {
+                list.add(entry.getKey());
+            }
+        }
+
+        return list;
     }
 
     /**

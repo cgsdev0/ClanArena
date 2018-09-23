@@ -61,7 +61,7 @@ public class MsgUtils {
      * @param message the message being sent
      */
     static public void raw (CommandSender target, String message) {
-        target.sendMessage(Colors.INFO + colorMessage(message));
+        target.sendMessage(colorMessage(Colors.INFO + message));
     }
 
     /**

@@ -6,7 +6,8 @@ public class ClanArena extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
+        this.getCommand("ClanArena").setExecutor(new CommandManager());
+        MsgUtils.logMessage("~Commands registered!~");
     }
 
     @Override

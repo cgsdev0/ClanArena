@@ -1,0 +1,5 @@
+name: ClanArena
+authors: [CoolGamrSms]
+version: 1.0.0
+main: com.shaneschulte.mc.clanarena.ClanArena
+api-version: 1.13

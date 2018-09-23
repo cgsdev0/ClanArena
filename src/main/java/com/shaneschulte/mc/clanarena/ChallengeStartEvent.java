@@ -8,13 +8,13 @@ import org.bukkit.event.HandlerList;
 
 import java.util.List;
 
-public class ChallengeEvent extends Event implements Cancellable {
+public class ChallengeStartEvent extends Event implements Cancellable {
 
     private static final HandlerList HANDLERS = new HandlerList();
     private boolean isCancelled;
     private Group[] groups;
 
-    public ChallengeEvent(OfflinePlayer challenger, OfflinePlayer opponent) {
+    public ChallengeStartEvent(OfflinePlayer challenger, OfflinePlayer opponent) {
         this.isCancelled = false;
         this.groups = new Group[2];
         this.groups[0] = GroupManager.get().getByPlayer(challenger);

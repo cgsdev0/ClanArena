@@ -7,8 +7,8 @@ import org.bukkit.command.CommandSender;
 
 import java.util.UUID;
 
-public class ChallengeCommand extends Command {
-    public ChallengeCommand(String name) {
+public class ChallengeStartCommand extends Command {
+    public ChallengeStartCommand(String name) {
         super(name);
     }
 
@@ -36,7 +36,7 @@ public class ChallengeCommand extends Command {
             return false;
         }
 
-        ChallengeEvent event = new ChallengeEvent(caller, target);
+        ChallengeStartEvent event = new ChallengeStartEvent(caller, target);
         Bukkit.getPluginManager().callEvent(event);
 
         if (!event.isCancelled())

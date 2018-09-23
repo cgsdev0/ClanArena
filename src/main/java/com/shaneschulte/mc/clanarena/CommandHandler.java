@@ -1,6 +1,5 @@
 package com.shaneschulte.mc.clanarena;
 
-import com.shaneschulte.mc.clanarena.commands.Challenge;
 import com.shaneschulte.mc.clanarena.utils.CmdProperties;
 import com.shaneschulte.mc.clanarena.utils.MsgUtils;
 import org.bukkit.command.Command;
@@ -17,7 +16,7 @@ public class CommandHandler implements CommandExecutor {
 
     CommandHandler() {
         // REGISTER BASE COMMANDS HERE
-        registerArgument(new Challenge());
+        registerArgument(new ChallengeStart());
     }
 
     @Override

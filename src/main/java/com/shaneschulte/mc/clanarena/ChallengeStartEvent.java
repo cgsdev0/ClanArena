@@ -1,7 +1,9 @@
 package com.shaneschulte.mc.clanarena;
 
 import com.shaneschulte.mc.clanarena.adapters.GroupManager;
+import com.shaneschulte.mc.clanarena.utils.MsgUtils;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -19,6 +21,14 @@ public class ChallengeStartEvent extends Event implements Cancellable {
         this.groups = new Group[2];
         this.groups[0] = GroupManager.get().getByPlayer(challenger);
         this.groups[1] = GroupManager.get().getByPlayer(opponent);
+
+        if (this.groups[0] == null || this.groups[1] == null) {
+            isCancelled = true;
+        }
+    }
+
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
     }
 
     @Override

@@ -8,6 +8,10 @@ public class ClanArenaListener implements Listener {
 
     @EventHandler
     public void onChallenge (ChallengeStartEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
         MsgUtils.broadcastMessage("Challengers: " + event.getChallengers().toString());
         MsgUtils.broadcastMessage("Opponents: " + event.getChallengers().toString());
     }

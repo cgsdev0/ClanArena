@@ -9,6 +9,8 @@ public class ClanArena extends JavaPlugin {
     public void onEnable() {
         this.getCommand("ClanArena").setExecutor(new CommandHandler());
         MsgUtils.log("~Commands registered!~");
+
+        getServer().getPluginManager().registerEvents(new ClanArenaListener(), this);
     }
 
     @Override

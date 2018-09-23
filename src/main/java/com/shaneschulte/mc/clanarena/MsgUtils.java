@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-public class MessageManager {
+public class MsgUtils {
 
     // ClanArena prefix
     private static String prefix = "&bClanArena&e> &r";
@@ -21,7 +21,7 @@ public class MessageManager {
      * @param target the target you want to send the message to
      * @param message the message being sent
      */
-    public void sendMessage (CommandSender target, String message) {
+    static void sendMessage(CommandSender target, String message) {
         target.sendMessage(colorMessage(prefix + Colors.info + message));
     }
 
@@ -29,7 +29,7 @@ public class MessageManager {
      * Sends a message to all players
      * @param message the message being sent to all players
      */
-    public void broadcastMessage (String message) {
+    static public void broadcastMessage (String message) {
         Bukkit.getServer().broadcastMessage(colorMessage(prefix + Colors.info + message));
     }
 
@@ -38,7 +38,7 @@ public class MessageManager {
      * @param target the target you want to send the message to
      * @param message the message being sent
      */
-    public void sendRawMessage (CommandSender target, String message) {
+    static public void sendRawMessage (CommandSender target, String message) {
         target.sendMessage(Colors.info + colorMessage(message));
     }
 
@@ -46,7 +46,7 @@ public class MessageManager {
      * Logs a message to the console
      * @param message the message to log to console
      */
-    public void logMessage (String message) {
+    static void logMessage(String message) {
         Bukkit.getLogger().info(prefix + message);
     }
 
@@ -55,7 +55,7 @@ public class MessageManager {
      * @param message the message to be colored
      * @return the colored message
      */
-    private String colorMessage(String message) {
+    private static String colorMessage(String message) {
         char colorCode = '&';
         return ChatColor.translateAlternateColorCodes(colorCode, message);
     }

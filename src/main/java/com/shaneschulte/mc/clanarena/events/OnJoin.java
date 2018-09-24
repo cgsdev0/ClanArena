@@ -7,10 +7,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class OnJoin implements Listener {
+
+    /**
+     * login message, add dynamic content later
+     */
     @EventHandler
     public void onLogin(PlayerJoinEvent event) {
         MsgUtils.sendMessage(event.getPlayer(), "Welcome! Message board:");
         MsgUtils.raw(event.getPlayer(), "-= " + MsgUtils.Colors.HIGHLIGHT + "clan1" + MsgUtils.Colors.INFO + " claimed victory over " + MsgUtils.Colors.HIGHLIGHT + "clan2" + MsgUtils.Colors.INFO + " =-");
-        MsgUtils.raw(event.getPlayer(), "-= there are no other messages    =-");
+        MsgUtils.raw(event.getPlayer(), "-= there are no other messages     =-");
     }
 }

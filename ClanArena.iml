@@ -23,5 +23,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.sacredlabyrinth.phaed.simpleclans:SimpleClans:2.7.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.milkbowl.vault:VaultAPI:1.7" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.gmail.nossr50.mcMMO:mcMMO:1.6.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" exported="" name="Maven: me.lucko:commodore:1.0" level="project" />
+    <orderEntry type="library" exported="" name="Maven: com.mojang:brigadier:0.1.27" level="project" />
   </component>
 </module>

@@ -85,24 +85,20 @@ public class Challenge implements CmdProperties, AutoCompletable {
     }
 
     @Override
-    public List<ArrayList<String>> getAutocompleteOptions() {
+    public List<ArrayList<String>> getAutocompleteOptions(/*CommandSender sender*/) {
         // Array for all autocomplete lists (there may only be one but it still has to be in an array list itself as well)
         List<ArrayList<String>> allOptions = new ArrayList<>();
 
-        GroupManager.get().listGroupTags();
-
         // for args 01
         ArrayList<String> clanOptions = new ArrayList<>();
-        clanOptions.add("clan1");
-        clanOptions.add("clan2");
+        clanOptions.addAll(GroupManager.get().listGroupTags());
 
         // for args 02
-        ArrayList<String> options2 = new ArrayList<>();
-        options2.add("option2");
-        options2.add("option4");
+        ArrayList<String> sizeOptions = new ArrayList<>();
+        sizeOptions.add(String.valueOf(GroupManager.get().getByTag(clanOptions.get(0)).members.size()));
 
         allOptions.add(clanOptions);
-        allOptions.add(options2);
+        allOptions.add(sizeOptions);
 
         return allOptions;
     }

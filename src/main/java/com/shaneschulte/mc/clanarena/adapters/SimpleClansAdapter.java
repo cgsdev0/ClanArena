@@ -7,6 +7,9 @@ import net.sacredlabyrinth.phaed.simpleclans.managers.ClanManager;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SimpleClansAdapter implements IGroupAdapter {
 
     ClanManager clans;
@@ -19,7 +22,6 @@ public class SimpleClansAdapter implements IGroupAdapter {
         if(clan == null) return null;
 
         Group result = new Group(clan.getName(), clan.getTag());
-
         clan.getAllMembers().forEach(player ->
                 result.addMember(Bukkit.getOfflinePlayer(player.getUniqueId())));
 
@@ -34,5 +36,12 @@ public class SimpleClansAdapter implements IGroupAdapter {
     @Override
     public Group getByPlayer(OfflinePlayer player) {
         return makeGroup(clans.getClanByPlayerUniqueId(player.getUniqueId()));
+    }
+
+    @Override
+    public List<String> listGroupTags() {
+        List<String> results = new ArrayList<>();
+        clans.getClans().forEach(clan -> results.add(clan.getTag()));
+        return results;
     }
 }

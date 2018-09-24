@@ -2,7 +2,6 @@ package com.shaneschulte.mc.clanarena;
 
 import com.shaneschulte.mc.clanarena.events.OnJoin;
 import com.shaneschulte.mc.clanarena.inventory.KitManager;
-import com.shaneschulte.mc.clanarena.listeners.ClanArenaListener;
 import com.shaneschulte.mc.clanarena.utils.ConstructTabCompleter;
 import com.shaneschulte.mc.clanarena.utils.MsgUtils;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,16 +12,21 @@ public class ClanArena extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        getServer().getPluginManager().registerEvents(new OnJoin(), this);
         instance = this;
-        MsgUtils.log("~Commands registered!~");
+
+        // Register Events
+        getServer().getPluginManager().registerEvents(new OnJoin(), this);
+        getServer().getPluginManager().registerEvents(new ClanArenaListener(), this);
+
+        // Kits
         KitManager.loadLoadouts();
 
+        // Register Commands
         this.getCommand("ClanArena").setExecutor(new CommandHandler());
         this.getCommand("ClanArena").setTabCompleter(new ConstructTabCompleter());
-        MsgUtils.log("~Commands registered!~");
 
-        getServer().getPluginManager().registerEvents(new ClanArenaListener(this), this);
+        // Console Output
+        MsgUtils.log("~Commands registered!~");
     }
 
     @Override
@@ -30,6 +34,10 @@ public class ClanArena extends JavaPlugin {
         instance = null;
     }
 
+    /**
+     * get instance of ClanArena plugin
+     * @return ClanArena instance
+     */
     public static ClanArena getPlugin() {
         return instance;
     }

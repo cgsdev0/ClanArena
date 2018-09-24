@@ -16,7 +16,7 @@ public class BossbarCmd implements CmdProperties {
         bar.addPlayer(p);
         bar.addFlag(BarFlag.PLAY_BOSS_MUSIC);
         bar.setTitle(ChatColor.translateAlternateColorCodes('&', "&c❤❤❤&8❤❤ &7- &b&lClan1 &r&7vs &b&lClan2 &r&7- &c ❤❤❤❤&8❤"));
-        bar.setProgress(.4);
+        bar.setProgress(4.0/12);
     }
 
     @Override

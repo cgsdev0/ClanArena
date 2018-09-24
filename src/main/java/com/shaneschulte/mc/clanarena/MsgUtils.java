@@ -46,7 +46,7 @@ public class MsgUtils {
      * Logs a message to the console
      * @param message the message to log to console
      */
-    static void logMessage(String message) {
+    public static void logMessage(String message) {
         Bukkit.getLogger().info(prefix + message);
     }
 

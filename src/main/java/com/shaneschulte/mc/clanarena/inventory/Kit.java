@@ -1,13 +1,18 @@
 package com.shaneschulte.mc.clanarena.inventory;
 
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Represents a player loadout.
  */
-public class Kit {
+public class Kit implements ConfigurationSerializable {
 
     private final ItemStack[] inventory;
     private final ItemStack[] armorContents;
@@ -20,6 +25,15 @@ public class Kit {
         this.armorContents = inv.getArmorContents().clone();
         this.offHand = inv.getItemInOffHand().clone();
         this.xp = player.getTotalExperience();
+    }
+
+    public Kit(Map<String, Object> map) {
+        this.inventory = new ItemStack[0];
+        ((List<ItemStack>) map.get("inv")).toArray(this.inventory);
+        this.armorContents = new ItemStack[0];
+        ((List<ItemStack>) map.get("armor")).toArray(this.armorContents);
+        this.offHand = (ItemStack) map.get("hand");
+        this.xp = 0;
     }
 
     public ItemStack[] getStorageContents() {
@@ -57,5 +71,22 @@ public class Kit {
         inv.setItemInOffHand(kit.getItemInOffHand());
 
         return result;
+    }
+
+    @Override
+    public Map<String, Object> serialize() {
+        Map<String, Object> result = new HashMap<>();
+        result.put("armor", armorContents);
+        result.put("inv", inventory);
+        result.put("hand", offHand);
+        return result;
+    }
+
+    public static Kit deserialize(Map<String, Object> map) {
+        return new Kit(map);
+    }
+
+    public static Kit valueOf(Map<String, Object> map) {
+        return new Kit(map);
     }
 }

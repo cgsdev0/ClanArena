@@ -7,6 +7,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class OnJoin implements Listener {
+
+    /**
+     * login message, add dynamic content later
+     */
     @EventHandler
     public void onLogin(PlayerJoinEvent event) {
         MsgUtils.sendMessage(event.getPlayer(), "Welcome! Message board:");

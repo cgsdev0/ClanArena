@@ -10,6 +10,10 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 
 public class BossbarCmd implements CmdProperties {
+
+    /**
+     * testing command to display a bossbar concept
+     */
     @Override
     public void perform(Player p, String allArgs, String[] args) {
         BossBar bar = Bukkit.getServer().createBossBar("Your Clan", BarColor.PINK, BarStyle.SEGMENTED_12);

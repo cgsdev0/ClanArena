@@ -1,17 +1,15 @@
 package com.shaneschulte.mc.clanarena.commands;
 
-import com.shaneschulte.mc.clanarena.ChallengeStartEvent;
+import com.shaneschulte.mc.clanarena.events.OnChallengeStart;
 import com.shaneschulte.mc.clanarena.utils.CmdProperties;
 import com.shaneschulte.mc.clanarena.utils.MsgUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
-import java.util.UUID;
 
 public class Challenge implements CmdProperties {
 
@@ -41,7 +39,7 @@ public class Challenge implements CmdProperties {
             return false;
         }
 
-        ChallengeStartEvent event = new ChallengeStartEvent(caller, target);
+        OnChallengeStart event = new OnChallengeStart(caller, target);
         Bukkit.getPluginManager().callEvent(event);
 
         BukkitRunnable runnable = new BukkitRunnable() {

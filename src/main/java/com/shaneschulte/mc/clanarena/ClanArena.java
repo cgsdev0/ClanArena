@@ -1,6 +1,7 @@
 package com.shaneschulte.mc.clanarena;
 
 import com.shaneschulte.mc.clanarena.events.OnJoin;
+import com.shaneschulte.mc.clanarena.listeners.ClanArenaListener;
 import com.shaneschulte.mc.clanarena.utils.ConstructTabCompleter;
 import com.shaneschulte.mc.clanarena.utils.MsgUtils;
 import org.bukkit.plugin.java.JavaPlugin;

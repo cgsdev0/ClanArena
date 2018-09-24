@@ -17,15 +17,9 @@ public class OnChallengeStart extends Event implements Cancellable {
     private boolean isCancelled;
     private Group[] groups;
 
-    public OnChallengeStart(OfflinePlayer challenger, OfflinePlayer opponent) {
+    public OnChallengeStart(Group challengers, Group opponents) {
         this.isCancelled = false;
-        this.groups = new Group[2];
-        this.groups[0] = GroupManager.get().getByPlayer(challenger);
-        this.groups[1] = GroupManager.get().getByPlayer(opponent);
-
-        if (this.groups[0] == null || this.groups[1] == null) {
-            isCancelled = true;
-        }
+        this.groups = new Group[]{challengers, opponents};
     }
 
     public static HandlerList getHandlerList() {

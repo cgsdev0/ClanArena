@@ -1,62 +1,56 @@
 package com.shaneschulte.mc.clanarena.commands;
 
+import com.shaneschulte.mc.clanarena.Group;
+import com.shaneschulte.mc.clanarena.adapters.GroupManager;
 import com.shaneschulte.mc.clanarena.events.OnChallengeStart;
 import com.shaneschulte.mc.clanarena.utils.CmdProperties;
 import com.shaneschulte.mc.clanarena.utils.MsgUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class Challenge implements CmdProperties {
 
     public Challenge() {
     }
 
-    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-
-        if (args.length != 1)
-        {
-            MsgUtils.sendMessage(sender, "invalid number of arguments");
-            return false;
-        }
-
-        OfflinePlayer caller = (OfflinePlayer) sender;
-        OfflinePlayer target = Bukkit.getPlayer(args[0]);
-
-        if (target == null || !target.isOnline())
-        {
-            MsgUtils.sendMessage(sender, args[0] + " was not found");
-            return false;
-        }
-
-        if (caller == target)
-        {
-            MsgUtils.sendMessage(sender, "You can't challenge self");
-            return false;
-        }
-
-        OnChallengeStart event = new OnChallengeStart(caller, target);
-        Bukkit.getPluginManager().callEvent(event);
-
-        BukkitRunnable runnable = new BukkitRunnable() {
-            @Override
-            public void run() {
-                MsgUtils.sendMessage(sender, "starting challenge");
-            }
-        };
-
-        runnable.runTaskLater(sender.getServer().getPluginManager().getPlugin("ClanArena"), 20 * 3);
-
-        return true;
-    }
-
     @Override
-    public void perform(Player p, String allArgs, String[] args) {
-        execute(p, getCommand(), Arrays.copyOfRange(args, 1, 2));
+    public void perform(Player player, String allArgs, String[] args) {
+        if (args.length != 2)
+        {
+            MsgUtils.sendMessage(player, "invalid number of arguments");
+            return;
+        }
+
+        Group challengers = GroupManager.get().getByTag(player.getName());
+        Group opponents = GroupManager.get().getByTag(args[0]);
+        int groupSize = Integer.min(Integer.min(Integer.parseInt(args[1]), challengers.members.size()), opponents.members.size());
+
+        if (challengers == null || opponents == null)
+        {
+            MsgUtils.sendMessage(player, "Group not found");
+            return;
+        }
+
+        if (challengers.name == opponents.name)
+        {
+            MsgUtils.sendMessage(player, "You can't challenge yourself");
+        }
+
+        if (groupSize <= 0) {
+            MsgUtils.sendMessage(player, "Too few players");
+            return;
+        }
+        else {
+            challengers.members.removeIf(member -> challengers.members.size() > groupSize);
+            opponents.members.removeIf(member -> opponents.members.size() > groupSize);
+        }
+
+        OnChallengeStart event = new OnChallengeStart(challengers, opponents);
+        Bukkit.getPluginManager().callEvent(event);
     }
 
     @Override

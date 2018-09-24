@@ -7,6 +7,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -32,22 +33,26 @@ public class ChallengeStart implements CmdProperties {
             MsgUtils.sendMessage(sender, args[0] + " was not found");
             return false;
         }
-
-        if (caller == target)
-        {
-            MsgUtils.sendMessage(sender, "You can't challenge self");
-            return false;
-        }
+//
+//        if (caller == target)
+//        {
+//            MsgUtils.sendMessage(sender, "You can't challenge self");
+//            return false;
+//        }
 
         ChallengeStartEvent event = new ChallengeStartEvent(caller, target);
         Bukkit.getPluginManager().callEvent(event);
 
-        if (!event.isCancelled())
-        {
-            MsgUtils.sendMessage(sender, "starting challenge");
-            return true;
-        }
-        return false;
+        BukkitRunnable runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                MsgUtils.sendMessage(sender, "starting challenge");
+            }
+        };
+
+        runnable.runTaskLater(sender.getServer().getPluginManager().getPlugin("ClanArena"), 20 * 3);
+
+        return true;
     }
 
     @Override
@@ -57,7 +62,7 @@ public class ChallengeStart implements CmdProperties {
 
     @Override
     public String getCommand() {
-        return "challenge";
+        return "Challenge";
     }
 
     @Override
@@ -67,7 +72,7 @@ public class ChallengeStart implements CmdProperties {
 
     @Override
     public String getUsage() {
-        return "/clanarena challenge [target]";
+        return "/ca Challenge <player>";
     }
 
     @Override

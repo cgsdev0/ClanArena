@@ -28,9 +28,9 @@ public class Kit implements ConfigurationSerializable {
     }
 
     public Kit(Map<String, Object> map) {
-        this.inventory = new ItemStack[0];
+        this.inventory = new ItemStack[36];
         ((List<ItemStack>) map.get("inv")).toArray(this.inventory);
-        this.armorContents = new ItemStack[0];
+        this.armorContents = new ItemStack[4];
         ((List<ItemStack>) map.get("armor")).toArray(this.armorContents);
         this.offHand = (ItemStack) map.get("hand");
         this.xp = 0;

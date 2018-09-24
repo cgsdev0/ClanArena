@@ -1,18 +1,22 @@
 package com.shaneschulte.mc.clanarena.commands;
 
 import com.shaneschulte.mc.clanarena.utils.CmdProperties;
-import com.shaneschulte.mc.clanarena.utils.MsgUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 
-public class Test implements CmdProperties {
+public class BossbarCmd implements CmdProperties {
     @Override
     public void perform(Player p, String allArgs, String[] args) {
-        MsgUtils.sendMessage(p, "hi! ");
+        BossBar bar = Bukkit.getServer().createBossBar("Your Clan", BarColor.BLUE, BarStyle.SEGMENTED_12);
+        bar.addPlayer(p);
     }
 
     @Override
     public String getCommand() {
-        return "test";
+        return "bossbar";
     }
 
     @Override
@@ -22,17 +26,17 @@ public class Test implements CmdProperties {
 
     @Override
     public String getUsage() {
-        return "/ca test";
+        return "/bossbar";
     }
 
     @Override
     public String getHelpMessage() {
-        return "for testing code";
+        return "/bossbar";
     }
 
     @Override
     public String getPermission() {
-        return "clanarena.test";
+        return "clanarena.bossbar";
     }
 
     @Override

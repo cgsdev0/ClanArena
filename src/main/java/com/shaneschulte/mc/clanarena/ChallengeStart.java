@@ -16,7 +16,7 @@ public class ChallengeStart implements CmdProperties {
     public ChallengeStart() {
     }
 
-    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+    private boolean execute(CommandSender sender, String commandLabel, String[] args) {
 
         if (args.length != 1)
         {
@@ -72,7 +72,7 @@ public class ChallengeStart implements CmdProperties {
 
     @Override
     public String getHelpMessage() {
-        return "Challenge a rival clan!";
+        return "ChallengeCmd a rival clan!";
     }
 
     @Override

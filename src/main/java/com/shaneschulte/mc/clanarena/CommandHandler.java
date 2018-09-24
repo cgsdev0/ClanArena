@@ -1,7 +1,7 @@
 package com.shaneschulte.mc.clanarena;
 
-import com.shaneschulte.mc.clanarena.commands.Challenge;
-import com.shaneschulte.mc.clanarena.commands.Test;
+import com.shaneschulte.mc.clanarena.commands.BossbarCmd;
+import com.shaneschulte.mc.clanarena.commands.ChallengeCmd;
 import com.shaneschulte.mc.clanarena.utils.CmdProperties;
 import com.shaneschulte.mc.clanarena.utils.MsgUtils;
 import org.bukkit.command.Command;
@@ -15,15 +15,15 @@ import java.util.Map;
 
 public class CommandHandler implements CommandExecutor {
 
-    private static HashMap<String, CmdProperties> commandClasses = new HashMap<String, CmdProperties>();
+    private static HashMap<String, CmdProperties> commandClasses = new HashMap<>();
 
     /**
      * Commands need to be registered here in order to work! Also put in plugin.yml pls
      * any new command can simply implement CmdProperties and generate the needed values
      */
     CommandHandler() {
-        registerArgument(new Challenge());
-        registerArgument(new Test());
+        registerArgument(new ChallengeCmd());
+        registerArgument(new BossbarCmd());
     }
 
     /**
@@ -41,6 +41,15 @@ public class CommandHandler implements CommandExecutor {
         }
 
         return list;
+    }
+
+    /**
+     * Returns CmdProperties from command name
+     * @param name the name of the command to look up
+     * @return the command properties
+     */
+    public static CmdProperties getCommandPropertiesFromName(String name) {
+        return commandClasses.get(name);
     }
 
     /**

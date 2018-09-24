@@ -2,43 +2,50 @@ package com.shaneschulte.mc.clanarena.commands;
 
 import com.shaneschulte.mc.clanarena.inventory.KitManager;
 import com.shaneschulte.mc.clanarena.utils.CmdProperties;
-import org.bukkit.Bukkit;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
-import org.bukkit.boss.BossBar;
+import com.shaneschulte.mc.clanarena.utils.MsgUtils;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-public class BossbarCmd implements CmdProperties {
+public class KitAddCmd implements CmdProperties {
     @Override
     public void perform(Player p, String allArgs, String[] args) {
-        BossBar bar = Bukkit.getServer().createBossBar("Your Clan", BarColor.BLUE, BarStyle.SEGMENTED_12);
-        bar.addPlayer(p);
-        KitManager.kitMenu.open(p);
+        Material mat = Material.valueOf(args[2]);
+        if(mat == null) {
+            MsgUtils.error(p, "Invalid material " + args[2]);
+            return;
+        }
+        try {
+            KitManager.createKit(p, args[1], mat);
+            MsgUtils.sendMessage(p, "New kit created successfully!");
+        }
+        catch(IllegalArgumentException e) {
+            MsgUtils.error(p, e.getMessage());
+        }
     }
 
     @Override
     public String getCommand() {
-        return "bossbar";
+        return "kitadd";
     }
 
     @Override
     public int getLength() {
-        return 0;
+        return 2;
     }
 
     @Override
     public String getUsage() {
-        return "/bossbar";
+        return "/ca kitadd [name] [icon]";
     }
 
     @Override
     public String getHelpMessage() {
-        return "/bossbar";
+        return "Create a new kit";
     }
 
     @Override
     public String getPermission() {
-        return "clanarena.bossbar";
+        return "clanarena.kit.create";
     }
 
     @Override

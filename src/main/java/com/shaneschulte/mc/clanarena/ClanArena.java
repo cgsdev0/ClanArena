@@ -1,6 +1,7 @@
 package com.shaneschulte.mc.clanarena;
 
 import com.shaneschulte.mc.clanarena.inventory.KitManager;
+import com.shaneschulte.mc.clanarena.listeners.ClanArenaListener;
 import com.shaneschulte.mc.clanarena.utils.ConstructTabCompleter;
 import com.shaneschulte.mc.clanarena.utils.MsgUtils;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,6 +19,8 @@ public class ClanArena extends JavaPlugin {
         this.getCommand("ClanArena").setExecutor(new CommandHandler());
         this.getCommand("ClanArena").setTabCompleter(new ConstructTabCompleter());
         MsgUtils.log("~Commands registered!~");
+
+        getServer().getPluginManager().registerEvents(new ClanArenaListener(this), this);
     }
 
     @Override

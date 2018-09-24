@@ -1,5 +1,6 @@
 package com.shaneschulte.mc.clanarena.inventory;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,6 +18,7 @@ public class Kit implements ConfigurationSerializable {
     private final ItemStack[] inventory;
     private final ItemStack[] armorContents;
     private final ItemStack offHand;
+    private Material icon;
     private final int xp;
 
     public Kit(Player player) {
@@ -25,6 +27,12 @@ public class Kit implements ConfigurationSerializable {
         this.armorContents = inv.getArmorContents().clone();
         this.offHand = inv.getItemInOffHand().clone();
         this.xp = player.getTotalExperience();
+        this.icon = null;
+    }
+
+    public Kit(Player player, Material icon) {
+        this(player);
+        this.icon = icon;
     }
 
     public Kit(Map<String, Object> map) {
@@ -33,23 +41,28 @@ public class Kit implements ConfigurationSerializable {
         this.armorContents = new ItemStack[4];
         ((List<ItemStack>) map.get("armor")).toArray(this.armorContents);
         this.offHand = (ItemStack) map.get("hand");
+        this.icon = Material.valueOf((String)map.get("icon"));
         this.xp = 0;
     }
 
     public ItemStack[] getStorageContents() {
-        return inventory.clone();
+        return inventory;
     }
 
     public ItemStack[] getArmorContents() {
-        return armorContents.clone();
+        return armorContents;
     }
 
     public ItemStack getItemInOffHand() {
-        return offHand.clone();
+        return offHand;
     }
 
     public int getTotalExperience() {
         return xp;
+    }
+
+    public Material getIcon() {
+        return icon;
     }
 
     /**
@@ -79,6 +92,7 @@ public class Kit implements ConfigurationSerializable {
         result.put("armor", armorContents);
         result.put("inv", inventory);
         result.put("hand", offHand);
+        result.put("icon", icon.toString());
         return result;
     }
 

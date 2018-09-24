@@ -3,37 +3,49 @@ package com.shaneschulte.mc.clanarena.commands;
 import com.shaneschulte.mc.clanarena.inventory.KitManager;
 import com.shaneschulte.mc.clanarena.utils.CmdProperties;
 import com.shaneschulte.mc.clanarena.utils.MsgUtils;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-public class Test implements CmdProperties {
+public class KitAddCmd implements CmdProperties {
     @Override
     public void perform(Player p, String allArgs, String[] args) {
-        KitManager.kitMenu.open(p);
+        Material mat = Material.valueOf(args[2]);
+        if(mat == null) {
+            MsgUtils.error(p, "Invalid material " + args[2]);
+            return;
+        }
+        try {
+            KitManager.createKit(p, args[1], mat);
+            MsgUtils.sendMessage(p, "New kit created successfully!");
+        }
+        catch(IllegalArgumentException e) {
+            MsgUtils.error(p, e.getMessage());
+        }
     }
 
     @Override
     public String getCommand() {
-        return "test";
+        return "kitadd";
     }
 
     @Override
     public int getLength() {
-        return 0;
+        return 2;
     }
 
     @Override
     public String getUsage() {
-        return "/ca test";
+        return "/ca kitadd [name] [icon]";
     }
 
     @Override
     public String getHelpMessage() {
-        return "for testing code";
+        return "Create a new kit";
     }
 
     @Override
     public String getPermission() {
-        return "clanarena.test";
+        return "clanarena.kit.create";
     }
 
     @Override

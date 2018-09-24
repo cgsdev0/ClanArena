@@ -10,4 +10,4 @@ commands:
     description: base ClanArena command
     usage: /ClanArena
     aliases: [ca, arena]
-    permission: commandarena.help
+    permission: clanarena.help

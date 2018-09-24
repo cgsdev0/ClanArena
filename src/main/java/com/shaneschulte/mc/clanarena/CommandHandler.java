@@ -1,7 +1,6 @@
 package com.shaneschulte.mc.clanarena;
 
-import com.shaneschulte.mc.clanarena.commands.Challenge;
-import com.shaneschulte.mc.clanarena.commands.Test;
+import com.shaneschulte.mc.clanarena.commands.*;
 import com.shaneschulte.mc.clanarena.utils.CmdProperties;
 import com.shaneschulte.mc.clanarena.utils.MsgUtils;
 import org.bukkit.command.Command;
@@ -24,6 +23,7 @@ public class CommandHandler implements CommandExecutor {
     CommandHandler() {
         registerArgument(new Challenge());
         registerArgument(new Test());
+        registerArgument(new KitAddCmd());
     }
 
     /**

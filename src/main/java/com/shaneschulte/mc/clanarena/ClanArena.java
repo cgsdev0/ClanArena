@@ -11,6 +11,8 @@ public class ClanArena extends JavaPlugin {
         this.getCommand("ClanArena").setExecutor(new CommandHandler());
         this.getCommand("ClanArena").setTabCompleter(new ConstructTabCompleter());
         MsgUtils.log("~Commands registered!~");
+
+        getServer().getPluginManager().registerEvents(new ClanArenaListener(), this);
     }
 
     @Override

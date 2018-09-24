@@ -6,7 +6,7 @@ public class GroupManager {
 
     private static IGroupAdapter adapter;
 
-    public static IGroupAdapter get(){
+    public static IGroupAdapter get() {
         if(adapter == null) {
             if (Bukkit.getServer().getPluginManager().isPluginEnabled("SimpleClans")) {
                 adapter = new SimpleClansAdapter();

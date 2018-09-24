@@ -32,7 +32,7 @@ public class ConstructTabCompleter implements TabCompleter {
             CmdProperties cmdProperties = CommandHandler.getCommandPropertiesFromName(arguments[0]);
 
             // get list of options from the auto completable command
-            List<ArrayList<String>> allOptions = ((AutoCompletable) cmdProperties).getArrayListOfAutocompleteStringListsOrganizedByIndex();
+            List<ArrayList<String>> allOptions = ((AutoCompletable) cmdProperties).getAutocompleteOptions();
 
             // if no more options return
             if (arguments.length -2 >= allOptions.size()) return null;

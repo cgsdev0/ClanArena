@@ -6,5 +6,5 @@ import java.util.List;
 public interface AutoCompletable {
 
 
-    List<ArrayList<String>> getArrayListOfAutocompleteStringListsOrganizedByIndex();
+    List<ArrayList<String>> getAutocompleteOptions();
 }

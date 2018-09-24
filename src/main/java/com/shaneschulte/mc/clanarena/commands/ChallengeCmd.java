@@ -53,7 +53,7 @@ public class ChallengeCmd implements CmdProperties, AutoCompletable {
     }
 
     @Override
-    public List<ArrayList<String>> getArrayListOfAutocompleteStringListsOrganizedByIndex() {
+    public List<ArrayList<String>> getAutocompleteOptions() {
         // Array for all autocomplete lists (there may only be one but it still has to be in an array list itself as well)
         List<ArrayList<String>> allOptions = new ArrayList<>();
 

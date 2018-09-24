@@ -1,5 +1,6 @@
-package com.shaneschulte.mc.clanarena;
+package com.shaneschulte.mc.clanarena.events;
 
+import com.shaneschulte.mc.clanarena.Group;
 import com.shaneschulte.mc.clanarena.adapters.GroupManager;
 import com.shaneschulte.mc.clanarena.utils.MsgUtils;
 import org.bukkit.OfflinePlayer;
@@ -10,21 +11,15 @@ import org.bukkit.event.HandlerList;
 
 import java.util.List;
 
-public class ChallengeStartEvent extends Event implements Cancellable {
+public class OnChallengeStart extends Event implements Cancellable {
 
     private static final HandlerList HANDLERS = new HandlerList();
     private boolean isCancelled;
     private Group[] groups;
 
-    public ChallengeStartEvent(OfflinePlayer challenger, OfflinePlayer opponent) {
+    public OnChallengeStart(Group challengers, Group opponents) {
         this.isCancelled = false;
-        this.groups = new Group[2];
-        this.groups[0] = GroupManager.get().getByPlayer(challenger);
-        this.groups[1] = GroupManager.get().getByPlayer(opponent);
-
-        if (this.groups[0] == null || this.groups[1] == null) {
-            isCancelled = true;
-        }
+        this.groups = new Group[]{challengers, opponents};
     }
 
     public static HandlerList getHandlerList() {
@@ -46,11 +41,11 @@ public class ChallengeStartEvent extends Event implements Cancellable {
         isCancelled = cancel;
     }
 
-    public List<OfflinePlayer> getChallengers() {
-        return groups[0].members;
+    public Group getChallengers() {
+        return groups[0];
     }
 
-    public List<OfflinePlayer> getOpponents() {
-        return groups[1].members;
+    public Group getOpponents() {
+        return groups[1];
     }
 }

@@ -4,7 +4,6 @@ import com.shaneschulte.mc.clanarena.events.OnJoin;
 import com.shaneschulte.mc.clanarena.inventory.KitManager;
 import com.shaneschulte.mc.clanarena.utils.ConstructTabCompleter;
 import com.shaneschulte.mc.clanarena.utils.MsgUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ClanArena extends JavaPlugin {

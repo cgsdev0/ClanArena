@@ -1,6 +1,6 @@
 package com.shaneschulte.mc.clanarena.inventory;
 
-import com.shaneschulte.mc.clanarena.MsgUtils;
+import com.shaneschulte.mc.clanarena.utils.MsgUtils;
 import com.shaneschulte.mc.clanarena.utils.FileUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -81,7 +81,7 @@ public class KitManager {
         FileConfiguration config = FileUtils.loadCustomFile(loadoutsFile);
         config.getConfigurationSection("kits")
                 .getValues(true).forEach((name, obj) -> loadoutKits.put(name, (Kit)obj));
-        loadoutKits.forEach((name, kit) -> MsgUtils.logMessage("Loaded kit: " + name));
+        loadoutKits.forEach((name, kit) -> MsgUtils.log("Loaded kit: " + name));
     }
 
     public static void saveLoadouts() {

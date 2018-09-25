@@ -27,11 +27,17 @@ public class Kit implements ConfigurationSerializable {
         this.xp = player.getTotalExperience();
     }
 
+    @SuppressWarnings("unchecked")
     public Kit(Map<String, Object> map) {
         this.inventory = new ItemStack[36];
-        ((List<ItemStack>) map.get("inv")).toArray(this.inventory);
         this.armorContents = new ItemStack[4];
-        ((List<ItemStack>) map.get("armor")).toArray(this.armorContents);
+        try {
+            ((List<ItemStack>) map.get("inv")).toArray(this.inventory);
+            ((List<ItemStack>) map.get("armor")).toArray(this.armorContents);
+        }
+        catch(ClassCastException e) {
+            e.printStackTrace();
+        }
         this.offHand = (ItemStack) map.get("hand");
         this.xp = 0;
     }

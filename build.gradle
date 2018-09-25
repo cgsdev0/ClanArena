@@ -1,0 +1,76 @@
+// NOTICE: This build script will not work without a config.gradle file.
+//
+// If you want to export the generated jar to a custom folder,
+// create a new file called 'config.gradle' in the root project folder.
+// In that file, save this expression:
+//
+// project.ext.outFolder = <YOUR FOLDER HERE>
+//
+// If you don't want to export the jar to another folder,
+// save this expression:
+//
+// project.ext.outFolder = ""
+
+group 'com.shaneschulte.mc.clanarena'
+version '1.0-SNAPSHOT'
+
+defaultTasks 'build'
+
+apply from: 'config.gradle'
+apply plugin: 'groovy'
+apply plugin: 'java'
+apply plugin: 'maven'
+
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url = 'http://nexus.hc.to/content/repositories/pub_releases' }
+    maven { url = 'http://maven.elmakers.com/repository/' }
+    maven { url = 'https://repo.lucko.me/' }
+    maven { url = 'https://repo.codemc.org/repository/maven-public/' }
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.3.11'
+    compile 'me.lucko:commodore:1.0'
+    compileOnly 'org.spigotmc:spigot-api:1.13-R0.1-SNAPSHOT' // The Spigot API with no shadowing. Requires the OSS repo.
+    compileOnly 'org.spigotmc:spigot:1.13-R0.1-SNAPSHOT' // The full Spigot server with no shadowing. Requires mavenLocal.
+    compileOnly 'net.sacredlabyrinth.phaed.simpleclans:SimpleClans:2.7.2'
+    compileOnly 'net.milkbowl.vault:VaultAPI:1.7'
+    compileOnly 'com.gmail.nossr50.mcMMO:mcMMO:1.6.0-SNAPSHOT'
+    compileOnly 'fr.minuskube.inv:smart-invs:1.2.4'
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
+    }
+}
+apply plugin: 'com.github.johnrengelman.shadow'
+
+shadowJar {
+    archiveName = 'ClanArena-' + project.version + '.jar'
+    dependencies {
+        include(dependency(':commodore'))
+    }
+    relocate 'me.lucko.commodore', 'com.shaneschulte.mc.clanarena.commodore'
+}
+
+build.dependsOn(shadowJar)
+
+task copyJar(type: Copy) {
+    from jar // shortcut for createJar.outputs.files
+    into project.outFolder
+}
+
+if (project.outFolder.length()) {
+    copyJar.dependsOn(shadowJar)
+    build.dependsOn(copyJar)
+}

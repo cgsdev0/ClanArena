@@ -2,6 +2,7 @@ package com.shaneschulte.mc.clanarena;
 
 import com.shaneschulte.mc.clanarena.events.OnJoin;
 import com.shaneschulte.mc.clanarena.inventory.KitManager;
+import com.shaneschulte.mc.clanarena.listeners.ClanArenaListener;
 import com.shaneschulte.mc.clanarena.utils.ConstructTabCompleter;
 import com.shaneschulte.mc.clanarena.utils.MsgUtils;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,7 +17,7 @@ public class ClanArena extends JavaPlugin {
 
         // Register Events
         getServer().getPluginManager().registerEvents(new OnJoin(), this);
-        getServer().getPluginManager().registerEvents(new ClanArenaListener(), this);
+        getServer().getPluginManager().registerEvents(new ClanArenaListener(this), this);
 
         // Kits
         KitManager.loadLoadouts();

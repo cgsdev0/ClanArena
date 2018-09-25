@@ -1,4 +1,5 @@
 language: java
 install:
   - chmod +x gradlew
+  - echo "project.ext.outFolder = \"\"" > config.gradle
   - ./gradlew assemble

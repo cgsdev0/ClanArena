@@ -1,4 +1,7 @@
 language: java
+branches:
+  only:
+    - master
 install:
   - chmod +x gradlew
   - echo "project.ext.outFolder = \"\"" > config.gradle

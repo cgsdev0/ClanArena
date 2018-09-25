@@ -3,3 +3,4 @@ out/*
 target/*
 .gradle/*
 build/*
+config.gradle

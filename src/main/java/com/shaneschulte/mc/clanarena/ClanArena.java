@@ -17,16 +17,23 @@ public class ClanArena extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        getServer().getPluginManager().registerEvents(new OnJoin(), this);
         instance = this;
-        MsgUtils.log("~Commands registered!~");
+
+        // Register Events
+        getServer().getPluginManager().registerEvents(new OnJoin(), this);
+        getServer().getPluginManager().registerEvents(new ClanArenaListener(this), this);
+
+        // Kits
         KitManager.loadLoadouts();
 
+        // Register Commands
         this.getCommand("ClanArena").setExecutor(new CommandHandler());
         this.getCommand("ClanArena").setTabCompleter(new ConstructTabCompleter());
-        MsgUtils.log("~Commands registered!~");
 
         getServer().getPluginManager().registerEvents(new ClanArenaListener(this), this);
+
+        // Console Output
+        MsgUtils.log("~Commands registered!~");
 
         // TODO: Use commodore
         /* register your command executor as normal.
@@ -49,6 +56,10 @@ public class ClanArena extends JavaPlugin {
         instance = null;
     }
 
+    /**
+     * get instance of ClanArena plugin
+     * @return ClanArena instance
+     */
     public static ClanArena getPlugin() {
         return instance;
     }

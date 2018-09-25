@@ -1,5 +1,7 @@
 # Clan Arena
 
+[![Build Status](https://travis-ci.com/CoolGamrSms/ClanArena.svg?branch=master)](https://travis-ci.com/CoolGamrSms/ClanArena)
+
 ## Planned Features
 
 ### Battles

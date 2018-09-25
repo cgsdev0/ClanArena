@@ -1,0 +1,2 @@
+// Set this folder if you want to copy the output jar somewhere
+project.ext.outFolder = ""

@@ -47,14 +47,4 @@ public class BossbarCmd implements CmdProperties {
     public String getPermission() {
         return "clanarena.bossbar";
     }
-
-    @Override
-    public boolean isAlias() {
-        return false;
-    }
-
-    @Override
-    public CmdProperties getAlias() {
-        return null;
-    }
 }

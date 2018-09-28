@@ -1,5 +1,6 @@
 package com.shaneschulte.mc.clanarena;
 
+import com.shaneschulte.mc.clanarena.commands.CreateCmd;
 import com.shaneschulte.mc.clanarena.events.OnJoin;
 import com.shaneschulte.mc.clanarena.inventory.KitManager;
 import com.shaneschulte.mc.clanarena.listeners.ClanArenaListener;
@@ -21,6 +22,7 @@ public class ClanArena extends JavaPlugin {
 
         // Register Events
         getServer().getPluginManager().registerEvents(new OnJoin(), this);
+        getServer().getPluginManager().registerEvents(new CreateCmd(), this);
         getServer().getPluginManager().registerEvents(new ClanArenaListener(this), this);
 
         // Kits

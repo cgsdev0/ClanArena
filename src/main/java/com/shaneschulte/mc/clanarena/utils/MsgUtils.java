@@ -18,6 +18,7 @@ public class MsgUtils {
         INFO('7'),
         WARNING('c'),
         ERROR('c'),
+        SUCCESS('a'),
         VARIABLE('e'),
         HIGHLIGHT('b'),
         ;
@@ -47,6 +48,10 @@ public class MsgUtils {
         target.sendMessage(colorMessage(prefix + Colors.ERROR + message));
     }
 
+    static public void success (CommandSender target, String message) {
+        target.sendMessage(colorMessage(prefix + Colors.SUCCESS + message));
+    }
+
     /**
      * Sends a message to all players
      * @param message the message being sent to all players
@@ -69,7 +74,7 @@ public class MsgUtils {
      * @param message the message to log to console
      */
     public static void log(String message) {
-        Bukkit.getLogger().info(prefix + message);
+        Bukkit.getLogger().info(colorMessage(prefix + message));
     }
 
     /**

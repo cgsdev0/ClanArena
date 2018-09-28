@@ -15,10 +15,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 public class CreateCmd implements CmdProperties, Listener {
 
-    private static HashMap<String, SetupArena> playersArenas = new HashMap<>();
+    private static HashMap<UUID, SetupArena> playersArenas = new HashMap<>();
 
     @Override
     public void perform (Player p, String allArgs, String[] args) {
@@ -35,7 +36,7 @@ public class CreateCmd implements CmdProperties, Listener {
         // if /ca create <name>
         else {
             String arenaName = args[1];
-            playersArenas.put(p.getName(), new SetupArena(p, arenaName));
+            playersArenas.put(p.getUniqueId(), new SetupArena(p, arenaName));
             MsgUtils.success(p,"Creating arena \"" + MsgUtils.Colors.VARIABLE + arenaName + MsgUtils.Colors.SUCCESS + "\"");
             MsgUtils.sendMessage(p, MsgUtils.Colors.VARIABLE + "Left Click " + MsgUtils.Colors.INFO + "the first point in the " + MsgUtils.Colors.VARIABLE + "Arena" + MsgUtils.Colors.INFO + "'s region");
             MsgUtils.sendMessage(p, MsgUtils.Colors.VARIABLE + "Right Click " + MsgUtils.Colors.INFO + "the second point in the " + MsgUtils.Colors.VARIABLE + "Arena" + MsgUtils.Colors.INFO + "'s region");
@@ -49,7 +50,7 @@ public class CreateCmd implements CmdProperties, Listener {
     @EventHandler
     public void onPlayerInteract (PlayerInteractEvent event) {
         Player p = event.getPlayer();
-        if (!(playersArenas.containsKey(p.getName()))) return;
+        if (!(isPlayerAlreadyCreating(p))) return;
 
         // if player is in the middle of designating the 2 points
         if (isPlayerAlreadyCreating(p)) {
@@ -81,7 +82,7 @@ public class CreateCmd implements CmdProperties, Listener {
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player p = event.getPlayer();
-        if (!(playersArenas.containsKey(p.getName()))) return;
+        if (!(isPlayerAlreadyCreating(p))) return;
 
         // if player is in the middle of designating the 2 points
         if (event.getMessage().equalsIgnoreCase("done") && getSetupArena(p).getArenaState().equals(ArenaSetupState.SELECTING_REGION) && getSetupArena(p).isDoneSelectingRegion()) {
@@ -153,7 +154,7 @@ public class CreateCmd implements CmdProperties, Listener {
      * @return the player's current setup arena, null if empty
      */
     private SetupArena getSetupArena(Player p) {
-        return playersArenas.get(p.getName());
+        return playersArenas.get(p.getUniqueId());
     }
 
     /**
@@ -162,7 +163,7 @@ public class CreateCmd implements CmdProperties, Listener {
      */
     private void exitArenaSetup(Player p) {
         getSetupArena(p).hide();
-        playersArenas.remove(p.getName());
+        playersArenas.remove(p.getUniqueId());
     }
 
     /**
@@ -171,7 +172,7 @@ public class CreateCmd implements CmdProperties, Listener {
      * @return is the player currently creating an arena?
      */
     private boolean isPlayerAlreadyCreating(Player p) {
-        return (playersArenas.containsKey(p.getName()));
+        return (playersArenas.containsKey(p.getUniqueId()));
     }
 
     @Override

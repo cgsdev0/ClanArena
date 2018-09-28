@@ -15,23 +15,23 @@ public class MsgUtils {
      * Colors variable ex. Colors.HIGHLIGHT to highlight some text
      */
     public enum Colors {
-        INFO('7'),
-        WARNING('c'),
-        ERROR('c'),
-        SUCCESS('a'),
-        VARIABLE('e'),
-        HIGHLIGHT('b'),
+        INFO(ChatColor.GRAY),
+        WARNING(ChatColor.GOLD),
+        ERROR(ChatColor.RED),
+        SUCCESS(ChatColor.GREEN),
+        VARIABLE(ChatColor.YELLOW),
+        HIGHLIGHT(ChatColor.AQUA),
         ;
 
-        private final Character colorCode;
+        private final ChatColor chatColor;
 
-        Colors (final Character colorCode) {
-            this.colorCode = colorCode;
+        Colors (final ChatColor colorCode) {
+            this.chatColor = colorCode;
         }
 
         @Override
         public String toString() {
-            return '&' + colorCode.toString();
+            return (chatColor.toString());
         }
     }
 

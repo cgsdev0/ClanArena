@@ -10,7 +10,6 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class SetupArena {
 
@@ -24,7 +23,7 @@ public class SetupArena {
     /**
      * Minimum spawns to set for each team
      */
-    private static int minSpawns = 6;
+    private static int minSpawns = 4;
 
     private Player owner;
     private ArenaSetupState arenaState;
@@ -89,12 +88,12 @@ public class SetupArena {
         // if selecting spawn points
         else if (arenaState.equals(ArenaSetupState.SELECTING_TEAM1_SPAWNS) || arenaState.equals(ArenaSetupState.SELECTING_TEAM2_SPAWNS)) {
             floaty += firstTeamSpawns.size();
-            if (floaty > 6f) floaty = 6f;
+            if (floaty > (float) minSpawns) floaty = (float) minSpawns;
 
             floaty += secondTeamSpawns.size();
-            if (floaty > 12f) floaty = 12f;
+            if (floaty > (minSpawns * 2f)) floaty = (minSpawns * 2f);
 
-            floaty /= 12f;
+            floaty /= (minSpawns * 2f);
         }
 
         return floaty;

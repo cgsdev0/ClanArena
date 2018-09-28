@@ -1,6 +1,5 @@
 package com.shaneschulte.mc.clanarena;
 
-import com.shaneschulte.mc.clanarena.commands.BossbarCmd;
 import com.shaneschulte.mc.clanarena.commands.ChallengeCmd;
 import com.shaneschulte.mc.clanarena.commands.CreateCmd;
 import com.shaneschulte.mc.clanarena.utils.CmdProperties;
@@ -24,7 +23,6 @@ public class CommandHandler implements CommandExecutor {
      */
     CommandHandler() {
         registerArgument(new ChallengeCmd());
-        registerArgument(new BossbarCmd());
         registerArgument(new CreateCmd());
     }
 

@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 
-public class SetupArena {
+public class ArenaSetup {
 
     /**
      * States for the ArenaSetup
@@ -40,11 +40,11 @@ public class SetupArena {
     // todo: state manager with messages in here (switch statement in setArenaState())
 
     /**
-     * Creates a SetupArena to be modified on the fly. When complete, saves + creates arena
+     * Creates a ArenaSetup to be modified on the fly. When complete, saves + creates arena
      * @param owner The creator of this arena
      * @param arenaName The name of this arena
      */
-    public SetupArena(Player owner, String arenaName) {
+    public ArenaSetup(Player owner, String arenaName) {
         this.bossBar = Bukkit.getServer().createBossBar("PROGRESS", BarColor.PINK, BarStyle.SEGMENTED_12);
         this.bossBar.addPlayer(owner);
 
@@ -158,7 +158,7 @@ public class SetupArena {
     }
 
     /**
-     * Hides the SetupArena
+     * Hides the ArenaSetup
      * todo: change to complete() and save + initialize the arena
      */
     public void hide() {
@@ -167,7 +167,7 @@ public class SetupArena {
     }
 
     // QOL checks
-    public boolean isDoneSelectingRegion() {
+    public boolean isRegionSelected() {
         return (regionPos1 != null && regionPos2 != null);
     }
 

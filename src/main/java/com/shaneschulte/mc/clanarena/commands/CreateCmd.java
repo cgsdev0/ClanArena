@@ -1,7 +1,7 @@
 package com.shaneschulte.mc.clanarena.commands;
 
-import com.shaneschulte.mc.clanarena.arena.SetupArena;
-import com.shaneschulte.mc.clanarena.arena.SetupArena.ArenaSetupState;
+import com.shaneschulte.mc.clanarena.arena.ArenaSetup;
+import com.shaneschulte.mc.clanarena.arena.ArenaSetup.ArenaSetupState;
 import com.shaneschulte.mc.clanarena.utils.CmdProperties;
 import com.shaneschulte.mc.clanarena.utils.MsgUtils;
 import org.bukkit.entity.Player;
@@ -19,7 +19,7 @@ import java.util.UUID;
 
 public class CreateCmd implements CmdProperties, Listener {
 
-    private static HashMap<UUID, SetupArena> playersArenas = new HashMap<>();
+    private static HashMap<UUID, ArenaSetup> playersArenas = new HashMap<>();
 
     @Override
     public void perform (Player p, String allArgs, String[] args) {
@@ -29,14 +29,14 @@ public class CreateCmd implements CmdProperties, Listener {
         }
 
         // if player is already creating an arena
-        else if (isPlayerAlreadyCreating(p)) {
+        else if (isCreatingArena(p)) {
             MsgUtils.error(p, "You are already in the middle of creating an arena. Scroll up in chat if you need help or disconnect // die to reset this process");
         }
 
         // if /ca create <name>
         else {
             String arenaName = args[1];
-            playersArenas.put(p.getUniqueId(), new SetupArena(p, arenaName));
+            playersArenas.put(p.getUniqueId(), new ArenaSetup(p, arenaName));
             MsgUtils.success(p,"Creating arena \"" + MsgUtils.Colors.VARIABLE + arenaName + MsgUtils.Colors.SUCCESS + "\"");
             MsgUtils.sendMessage(p, MsgUtils.Colors.VARIABLE + "Left Click " + MsgUtils.Colors.INFO + "the first point in the " + MsgUtils.Colors.VARIABLE + "Arena" + MsgUtils.Colors.INFO + "'s region");
             MsgUtils.sendMessage(p, MsgUtils.Colors.VARIABLE + "Right Click " + MsgUtils.Colors.INFO + "the second point in the " + MsgUtils.Colors.VARIABLE + "Arena" + MsgUtils.Colors.INFO + "'s region");
@@ -50,16 +50,16 @@ public class CreateCmd implements CmdProperties, Listener {
     @EventHandler
     public void onPlayerInteract (PlayerInteractEvent event) {
         Player p = event.getPlayer();
-        if (!(isPlayerAlreadyCreating(p))) return;
+        if (!(isCreatingArena(p))) return;
 
         // if player is in the middle of designating the 2 points
-        if (isPlayerAlreadyCreating(p)) {
+        if (isCreatingArena(p)) {
 
             // on left click block
             if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
                 event.setCancelled(true);
                 getSetupArena(p).setRegionPos1(event.getClickedBlock().getLocation());
-                if (getSetupArena(p).isDoneSelectingRegion())
+                if (getSetupArena(p).isRegionSelected())
                     MsgUtils.sendMessage(p, "Type \"" + MsgUtils.Colors.SUCCESS + "done" + MsgUtils.Colors.INFO + "\" in chat when done");
             }
 
@@ -67,7 +67,7 @@ public class CreateCmd implements CmdProperties, Listener {
             else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 event.setCancelled(true);
                 getSetupArena(p).setRegionPos2(event.getClickedBlock().getLocation());
-                if (getSetupArena(p).isDoneSelectingRegion())
+                if (getSetupArena(p).isRegionSelected())
                     MsgUtils.sendMessage(p, "Type \"" + MsgUtils.Colors.SUCCESS + "done" + MsgUtils.Colors.INFO + "\" in chat when done");
             }
         }
@@ -82,10 +82,10 @@ public class CreateCmd implements CmdProperties, Listener {
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player p = event.getPlayer();
-        if (!(isPlayerAlreadyCreating(p))) return;
+        if (!(isCreatingArena(p))) return;
 
         // if player is in the middle of designating the 2 points
-        if (event.getMessage().equalsIgnoreCase("done") && getSetupArena(p).getArenaState().equals(ArenaSetupState.SELECTING_REGION) && getSetupArena(p).isDoneSelectingRegion()) {
+        if (event.getMessage().equalsIgnoreCase("done") && getSetupArena(p).getArenaState().equals(ArenaSetupState.SELECTING_REGION) && getSetupArena(p).isRegionSelected()) {
             event.setCancelled(true);
 
             // switch to phase 02
@@ -121,7 +121,7 @@ public class CreateCmd implements CmdProperties, Listener {
         else if (event.getMessage().equalsIgnoreCase("done") && getSetupArena(p).getArenaState().equals(ArenaSetupState.SELECTING_TEAM2_SPAWNS) && getSetupArena(p).canMoveOnFromSettingSecondTeamSpawns()) {
             event.setCancelled(true);
 
-            //TODO: write and initialize arena to file in SetupArena create() // hide() method
+            //TODO: write and initialize arena to file in ArenaSetup create() // hide() method
             //TODO: spawn points have to be in arena
             //TODO: arena vert region? yes // no
 
@@ -132,28 +132,28 @@ public class CreateCmd implements CmdProperties, Listener {
 
     @EventHandler
     public void onPlayerQuit (PlayerQuitEvent event) {
-        if (isPlayerAlreadyCreating(event.getPlayer()))
+        if (isCreatingArena(event.getPlayer()))
             exitArenaSetup(event.getPlayer());
     }
 
     @EventHandler
     public void onChangedWorld (PlayerChangedWorldEvent event) {
-        if (isPlayerAlreadyCreating(event.getPlayer()))
+        if (isCreatingArena(event.getPlayer()))
             exitArenaSetup(event.getPlayer());
     }
 
     @EventHandler
     public void onPlayerIsKilled (PlayerDeathEvent event) {
-        if (isPlayerAlreadyCreating(event.getEntity()))
+        if (isCreatingArena(event.getEntity()))
             exitArenaSetup(event.getEntity());
     }
 
     /**
-     * Returns the SetupArena that p is currently setting up
+     * Returns the ArenaSetup that p is currently setting up
      * @param p the player in question
      * @return the player's current setup arena, null if empty
      */
-    private SetupArena getSetupArena(Player p) {
+    private ArenaSetup getSetupArena(Player p) {
         return playersArenas.get(p.getUniqueId());
     }
 
@@ -171,7 +171,7 @@ public class CreateCmd implements CmdProperties, Listener {
      * @param p the player in question
      * @return is the player currently creating an arena?
      */
-    private boolean isPlayerAlreadyCreating(Player p) {
+    private boolean isCreatingArena(Player p) {
         return (playersArenas.containsKey(p.getUniqueId()));
     }
 

@@ -15,22 +15,23 @@ public class MsgUtils {
      * Colors variable ex. Colors.HIGHLIGHT to highlight some text
      */
     public enum Colors {
-        INFO('7'),
-        WARNING('c'),
-        ERROR('c'),
-        VARIABLE('e'),
-        HIGHLIGHT('b'),
+        INFO(ChatColor.GRAY),
+        WARNING(ChatColor.GOLD),
+        ERROR(ChatColor.RED),
+        SUCCESS(ChatColor.GREEN),
+        VARIABLE(ChatColor.YELLOW),
+        HIGHLIGHT(ChatColor.AQUA),
         ;
 
-        private final Character colorCode;
+        private final ChatColor chatColor;
 
-        Colors (final Character colorCode) {
-            this.colorCode = colorCode;
+        Colors (final ChatColor colorCode) {
+            this.chatColor = colorCode;
         }
 
         @Override
         public String toString() {
-            return '&' + colorCode.toString();
+            return (chatColor.toString());
         }
     }
 
@@ -45,6 +46,10 @@ public class MsgUtils {
 
     static public void error (CommandSender target, String message) {
         target.sendMessage(colorMessage(prefix + Colors.ERROR + message));
+    }
+
+    static public void success (CommandSender target, String message) {
+        target.sendMessage(colorMessage(prefix + Colors.SUCCESS + message));
     }
 
     /**
@@ -69,7 +74,7 @@ public class MsgUtils {
      * @param message the message to log to console
      */
     public static void log(String message) {
-        Bukkit.getLogger().info(prefix + message);
+        Bukkit.getLogger().info(colorMessage(prefix + message));
     }
 
     /**

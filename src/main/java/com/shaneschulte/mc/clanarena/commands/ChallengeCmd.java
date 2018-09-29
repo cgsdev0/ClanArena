@@ -57,16 +57,6 @@ public class ChallengeCmd implements CmdProperties, AutoCompletable {
     }
 
     @Override
-    public boolean isAlias() {
-        return false; //Isn't a alias
-    }
-
-    @Override
-    public CmdProperties getAlias() {
-        return null; //Normal command, no alias
-    }
-
-    @Override
     public String getUsage() {
         return "/ca challenge <clan>";
     }

@@ -29,7 +29,7 @@ public class Challenge implements CmdProperties, AutoCompletable {
             return;
         }
 
-        if (challengers.name == opponents.name)
+        if (challengers.name.equals(opponents.name))
         {
             MsgUtils.sendMessage(player, "You can't challenge yourself");
             return;
@@ -67,16 +67,6 @@ public class Challenge implements CmdProperties, AutoCompletable {
     @Override
     public String getHelpMessage() {
         return "Challenge a rival clan!";
-    }
-
-    @Override
-    public boolean isAlias() {
-        return false;
-    }
-
-    @Override
-    public CmdProperties getAlias() {
-        return null;
     }
 
     @Override

@@ -45,8 +45,12 @@ public interface CmdProperties {
      */
     String getPermission();
 
-    boolean isAlias();
+    default boolean isAlias() {
+        return false;
+    }
 
-    CmdProperties getAlias();
+    default CmdProperties getAlias() {
+        return null;
+    }
 
 }

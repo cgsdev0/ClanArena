@@ -6,20 +6,25 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.shaneschulte.mc.clanarena.ClanArena;
 import com.shaneschulte.mc.clanarena.Group;
 import com.shaneschulte.mc.clanarena.adapters.GroupManager;
+import com.shaneschulte.mc.clanarena.protocols.ChallengeHandler;
 import com.shaneschulte.mc.clanarena.protocols.RespawnHandler;
 import com.shaneschulte.mc.clanarena.utils.AutoCompletable;
 import com.shaneschulte.mc.clanarena.utils.CmdProperties;
 import com.shaneschulte.mc.clanarena.utils.MsgUtils;
 import org.bukkit.GameMode;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 
-public class ChallengeCmd implements CmdProperties, AutoCompletable {
+public class ChallengeCmd implements CmdProperties, AutoCompletable, Listener {
 
     @Override
     public void perform(Player player, String allArgs, String[] args) {
@@ -36,29 +41,44 @@ public class ChallengeCmd implements CmdProperties, AutoCompletable {
             return;
         }
 
-        if (challengers.name.equals(opponents.name))
-        {
+        if (challengers.name.equals(opponents.name)) {
             MsgUtils.sendMessage(player, "You can't challenge yourself");
             return;
         }
 
         int groupSize = Integer.min(Integer.min(Integer.parseInt(args[2]), challengers.members.size()), opponents.members.size());
-        if (groupSize <= 0) {
-            MsgUtils.sendMessage(player, "Too few players");
-            return;
-        } else {
-            challengers.members.removeIf(member -> challengers.members.size() > groupSize || !member.isOnline());
-            opponents.members.removeIf(member -> opponents.members.size() > groupSize || !member.isOnline());
-        }
+        
+        challengers.members.removeIf(member -> challengers.members.size() > groupSize || !member.isOnline());
+        opponents.members.removeIf(member -> opponents.members.size() > groupSize || !member.isOnline());
 
-        challengers.members.forEach(member -> member.getPlayer().setGameMode(GameMode.ADVENTURE));
+        challengers.members.forEach(member -> {
+            MsgUtils.sendMessage((CommandSender) member, "Challenging " + opponents.name);
+            member.getPlayer().setGameMode(GameMode.ADVENTURE);
+        });
         opponents.members.forEach(member -> {
             MsgUtils.sendMessage((CommandSender) member, "You are being challenged by " + challengers.name);
-            MsgUtils.sendMessage((CommandSender) member, "Type [...] to opt-out");
+            MsgUtils.sendMessage((CommandSender) member, "Type [No] to opt-out");
             member.getPlayer().setGameMode(GameMode.ADVENTURE);
         });
 
-        ProtocolLibrary.getProtocolManager().addPacketListener(new RespawnHandler(ClanArena.getPlugin(), ListenerPriority.NORMAL, challengers, opponents, PacketType.Play.Server.UPDATE_HEALTH));
+        ChallengeHandler challengeHandler = new ChallengeHandler(ClanArena.getPlugin(), ListenerPriority.NORMAL, challengers, opponents, PacketType.Play.Client.CHAT);
+        //delay for opt-outs
+        BukkitRunnable runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                ProtocolLibrary.getProtocolManager().removePacketListener(challengeHandler);
+                if (groupSize <= 0) {
+                    MsgUtils.sendMessage(player, "Too few players");
+                    return;
+                }
+
+                RespawnHandler handler = new RespawnHandler(ClanArena.getPlugin(), ListenerPriority.NORMAL, challengers, opponents, PacketType.Play.Server.UPDATE_HEALTH);
+                ProtocolLibrary.getProtocolManager().addPacketListener(handler);
+            }
+        };
+        ProtocolLibrary.getProtocolManager().addPacketListener(challengeHandler);
+
+        runnable.runTaskLater(ClanArena.getPlugin(), 100);
     }
 
     @Override

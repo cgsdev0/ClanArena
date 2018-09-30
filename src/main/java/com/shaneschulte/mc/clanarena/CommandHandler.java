@@ -1,6 +1,7 @@
 package com.shaneschulte.mc.clanarena;
 
 import com.shaneschulte.mc.clanarena.commands.*;
+import com.shaneschulte.mc.clanarena.commands.KitAddCmd;
 import com.shaneschulte.mc.clanarena.utils.CmdProperties;
 import com.shaneschulte.mc.clanarena.utils.MsgUtils;
 import org.bukkit.command.Command;
@@ -22,8 +23,8 @@ public class CommandHandler implements CommandExecutor {
      */
     CommandHandler() {
         registerArgument(new ChallengeCmd());
+        registerArgument(new CreateCmd());
         registerArgument(new KitAddCmd());
-        registerArgument(new BossbarCmd());
     }
 
     /**
@@ -102,12 +103,12 @@ public class CommandHandler implements CommandExecutor {
                             return true;
                         }
                     } else {
-                        //Not the right amount of arguments for the command. Maybe put something like cmdClass.getUsage() here to show the player how to use the command
+                        // Not the right amount of arguments for the command. Maybe put something like cmdClass.getUsage() here to show the player how to use the command
                         MsgUtils.error (sender, cmdClass.getUsage());
                         return true;
                     }
                 } else {
-                    //The argument doesn't exist.
+                    // The argument doesn't exist.
                     MsgUtils.error (sender, "/ca " + MsgUtils.Colors.VARIABLE + args[0] + MsgUtils.Colors.ERROR + " is not a command");
                     return true;
                 }

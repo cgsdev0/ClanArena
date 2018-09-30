@@ -1,40 +1,84 @@
 package com.shaneschulte.mc.clanarena.commands;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.ListenerPriority;
+import com.shaneschulte.mc.clanarena.ClanArena;
+import com.shaneschulte.mc.clanarena.Group;
 import com.shaneschulte.mc.clanarena.adapters.GroupManager;
+import com.shaneschulte.mc.clanarena.protocols.ChallengeHandler;
+import com.shaneschulte.mc.clanarena.protocols.RespawnHandler;
 import com.shaneschulte.mc.clanarena.utils.AutoCompletable;
 import com.shaneschulte.mc.clanarena.utils.CmdProperties;
 import com.shaneschulte.mc.clanarena.utils.MsgUtils;
+import org.bukkit.GameMode;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
-public class ChallengeCmd implements CmdProperties, AutoCompletable {
 
-    /**
-     * basic clan challenge command with autocomplete clans
-     */
+public class ChallengeCmd implements CmdProperties, AutoCompletable, Listener {
+
     @Override
-    public void perform(final Player p, final String allArgs, final String[] args) {
-        //What to do when the command is done
-        String clan = args[1];
-        MsgUtils.sendMessage(p, "You want to challenge " + MsgUtils.Colors.HIGHLIGHT + clan);
-    }
+    public void perform(Player player, String allArgs, String[] args) {
 
-    /**
-     * creates clan list for the first argument autocomplete
-     */
-    @Override
-    public ArrayList<ArrayList<String>> getAutocompleteOptions() {
-        // Array for all autocomplete lists (there may only be one but it still has to be in an array list itself as well)
-        ArrayList<ArrayList<String>> allOptions = new ArrayList<>();
-        ArrayList<String> groupTags = new ArrayList<>();
+        Group challengers = GroupManager.get().getByPlayer(player);
+        Group opponents = GroupManager.get().getByTag(args[1]);
 
-        GroupManager.get().listGroups().forEach(group->groupTags.add(group.getTag()));
+        if (challengers == null) {
+            MsgUtils.sendMessage(player, "You are not in a group");
+            return;
+        }
+        if (opponents == null) {
+            MsgUtils.sendMessage(player, "Group [" + args[1] + "] not found");
+            return;
+        }
 
-        allOptions.add(groupTags);
+        if (challengers.name.equals(opponents.name)) {
+            MsgUtils.sendMessage(player, "You can't challenge yourself");
+            return;
+        }
 
-        return allOptions;
+        int groupSize = Integer.min(Integer.min(Integer.parseInt(args[2]), challengers.members.size()), opponents.members.size());
+
+        challengers.members.removeIf(member -> challengers.members.size() > groupSize || !member.isOnline());
+        opponents.members.removeIf(member -> opponents.members.size() > groupSize || !member.isOnline());
+
+        challengers.members.forEach(member -> {
+            MsgUtils.sendMessage((CommandSender) member, "Challenging " + opponents.name);
+            member.getPlayer().setGameMode(GameMode.ADVENTURE);
+        });
+        opponents.members.forEach(member -> {
+            MsgUtils.sendMessage((CommandSender) member, "You are being challenged by " + challengers.name);
+            MsgUtils.sendMessage((CommandSender) member, "Type [No] to opt-out");
+            member.getPlayer().setGameMode(GameMode.ADVENTURE);
+        });
+
+        ChallengeHandler challengeHandler = new ChallengeHandler(ClanArena.getPlugin(), ListenerPriority.NORMAL, challengers, opponents, PacketType.Play.Client.CHAT);
+        //delay for opt-outs
+        BukkitRunnable runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                ProtocolLibrary.getProtocolManager().removePacketListener(challengeHandler);
+                if (groupSize <= 0) {
+                    MsgUtils.sendMessage(player, "Too few players");
+                    return;
+                }
+
+                RespawnHandler handler = new RespawnHandler(ClanArena.getPlugin(), ListenerPriority.NORMAL, challengers, opponents, PacketType.Play.Server.UPDATE_HEALTH);
+                ProtocolLibrary.getProtocolManager().addPacketListener(handler);
+            }
+        };
+        ProtocolLibrary.getProtocolManager().addPacketListener(challengeHandler);
+
+        runnable.runTaskLater(ClanArena.getPlugin(), 100);
     }
 
     @Override
@@ -44,7 +88,12 @@ public class ChallengeCmd implements CmdProperties, AutoCompletable {
 
     @Override
     public int getLength() {
-        return 1; //How many extra args, so one is like /command this (one)
+        return 2;
+    }
+
+    @Override
+    public String getUsage() {
+        return "/ca Challenge <group> <group size>";
     }
 
     @Override
@@ -58,17 +107,21 @@ public class ChallengeCmd implements CmdProperties, AutoCompletable {
     }
 
     @Override
-    public boolean isAlias() {
-        return false; //Isn't a alias
-    }
+    public List<ArrayList<String>> getAutocompleteOptions(/*CommandSender sender*/) {
+        // Array for all autocomplete lists (there may only be one but it still has to be in an array list itself as well)
+        List<ArrayList<String>> allOptions = new ArrayList<>();
 
-    @Override
-    public CmdProperties getAlias() {
-        return null; //Normal command, no alias
-    }
+        // for args 01
+        ArrayList<String> clanOptions = new ArrayList<>();
+        clanOptions.addAll(GroupManager.get().listGroupTags());
 
-    @Override
-    public String getUsage() {
-        return "/ca challenge <clan>";
+        // for args 02
+        ArrayList<String> sizeOptions = new ArrayList<>();
+        sizeOptions.add(String.valueOf(GroupManager.get().getByTag(clanOptions.get(0)).members.size()));
+
+        allOptions.add(clanOptions);
+        allOptions.add(sizeOptions);
+
+        return allOptions;
     }
 }

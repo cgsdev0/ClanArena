@@ -1,6 +1,6 @@
 package com.shaneschulte.mc.clanarena.commands;
 
-import com.shaneschulte.mc.clanarena.Group;
+import com.shaneschulte.mc.clanarena.adapters.Group;
 import com.shaneschulte.mc.clanarena.adapters.GroupManager;
 import com.shaneschulte.mc.clanarena.events.OnChallengeStart;
 import com.shaneschulte.mc.clanarena.utils.AutoCompletable;
@@ -29,24 +29,19 @@ public class Challenge implements CmdProperties, AutoCompletable {
             return;
         }
 
-        if (challengers.name == opponents.name)
+        if (challengers.getName().equalsIgnoreCase(opponents.getName()))
         {
             MsgUtils.sendMessage(player, "You can't challenge yourself");
             return;
         }
 
-        int groupSize = Integer.min(Integer.min(Integer.parseInt(args[2]), challengers.members.size()), opponents.members.size());
+        int groupSize = Integer.min(Integer.min(Integer.parseInt(args[2]), challengers.getOnlineMembers().size()), opponents.getOnlineMembers().size());
         if (groupSize <= 0) {
             MsgUtils.sendMessage(player, "Too few players");
             return;
         }
-        else {
-            challengers.members.removeIf(member -> challengers.members.size() > groupSize);
-            opponents.members.removeIf(member -> opponents.members.size() > groupSize);
-        }
 
-        OnChallengeStart event = new OnChallengeStart(challengers, opponents);
-        Bukkit.getPluginManager().callEvent(event);
+        Bukkit.getPluginManager().callEvent(new OnChallengeStart(challengers, opponents));
     }
 
     @Override
@@ -88,8 +83,6 @@ public class Challenge implements CmdProperties, AutoCompletable {
     public List<ArrayList<String>> getAutocompleteOptions() {
         // Array for all autocomplete lists (there may only be one but it still has to be in an array list itself as well)
         List<ArrayList<String>> allOptions = new ArrayList<>();
-
-        GroupManager.get().listGroupTags();
 
         // for args 01
         ArrayList<String> clanOptions = new ArrayList<>();

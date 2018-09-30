@@ -1,15 +1,9 @@
 package com.shaneschulte.mc.clanarena.events;
 
-import com.shaneschulte.mc.clanarena.Group;
-import com.shaneschulte.mc.clanarena.adapters.GroupManager;
-import com.shaneschulte.mc.clanarena.utils.MsgUtils;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
+import com.shaneschulte.mc.clanarena.adapters.Group;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-
-import java.util.List;
 
 public class OnChallengeStart extends Event implements Cancellable {
 

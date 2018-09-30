@@ -1,12 +1,11 @@
 package com.shaneschulte.mc.clanarena.adapters;
 
-import com.shaneschulte.mc.clanarena.Group;
 import org.bukkit.OfflinePlayer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TeamAdapter implements IGroupAdapter {
+public class TeamAdapter implements GroupAdapter {
 
     // TODO: Implement TeamAdapter
 
@@ -21,7 +20,7 @@ public class TeamAdapter implements IGroupAdapter {
     }
 
     @Override
-    public List<String> listGroupTags() {
+    public List<Group> listGroups() {
         return new ArrayList<>();
     }
 }

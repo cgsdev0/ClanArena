@@ -4,9 +4,9 @@ import org.bukkit.Bukkit;
 
 public class GroupManager {
 
-    private static IGroupAdapter adapter;
+    private static GroupAdapter adapter;
 
-    public static IGroupAdapter get() {
+    public static GroupAdapter get() {
         if(adapter == null) {
             if (Bukkit.getServer().getPluginManager().isPluginEnabled("SimpleClans")) {
                 adapter = new SimpleClansAdapter();

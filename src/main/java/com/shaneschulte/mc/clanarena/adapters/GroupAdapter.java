@@ -1,6 +1,5 @@
 package com.shaneschulte.mc.clanarena.adapters;
 
-import com.shaneschulte.mc.clanarena.Group;
 import org.bukkit.OfflinePlayer;
 
 import java.util.List;
@@ -9,7 +8,7 @@ import java.util.List;
  * Abstraction for interfacing with 'group' plugins,
  * such as SimpleClans and Factions.
  */
-public interface IGroupAdapter {
+public interface GroupAdapter {
 
     /**
      * Retrieve a 'group' of players.
@@ -29,5 +28,5 @@ public interface IGroupAdapter {
      * Retrieves a list of all the group tags.
      * @return List of strings (group tags)
      */
-    public List<String> listGroupTags();
+    public List<Group> listGroups();
 }

@@ -1,12 +1,11 @@
 package com.shaneschulte.mc.clanarena.adapters;
 
-import com.shaneschulte.mc.clanarena.Group;
 import org.bukkit.OfflinePlayer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FactionsAdapter implements IGroupAdapter {
+public class FactionsAdapter implements GroupAdapter {
 
     // TODO: Implement FactionsAdapter
 
@@ -21,7 +20,7 @@ public class FactionsAdapter implements IGroupAdapter {
     }
 
     @Override
-    public List<String> listGroupTags() {
+    public List<Group> listGroups() {
         return new ArrayList<>();
     }
 }

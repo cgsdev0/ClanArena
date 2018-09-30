@@ -1,8 +1,6 @@
 package com.shaneschulte.mc.clanarena.commands;
 
 import com.shaneschulte.mc.clanarena.adapters.GroupManager;
-import com.shaneschulte.mc.clanarena.adapters.IGroupAdapter;
-import com.shaneschulte.mc.clanarena.adapters.TeamAdapter;
 import com.shaneschulte.mc.clanarena.utils.AutoCompletable;
 import com.shaneschulte.mc.clanarena.utils.CmdProperties;
 import com.shaneschulte.mc.clanarena.utils.MsgUtils;
@@ -27,11 +25,14 @@ public class ChallengeCmd implements CmdProperties, AutoCompletable {
      * creates clan list for the first argument autocomplete
      */
     @Override
-    public List<ArrayList<String>> getAutocompleteOptions() {
+    public ArrayList<ArrayList<String>> getAutocompleteOptions() {
         // Array for all autocomplete lists (there may only be one but it still has to be in an array list itself as well)
-        List<ArrayList<String>> allOptions = new ArrayList<>();
+        ArrayList<ArrayList<String>> allOptions = new ArrayList<>();
+        ArrayList<String> groupTags = new ArrayList<>();
 
-        allOptions.add((ArrayList<String>) GroupManager.get().listGroupTags());
+        GroupManager.get().listGroups().forEach(group->groupTags.add(group.getTag()));
+
+        allOptions.add(groupTags);
 
         return allOptions;
     }

@@ -1,7 +1,6 @@
 package com.shaneschulte.mc.clanarena;
 
-import com.shaneschulte.mc.clanarena.commands.BossbarCmd;
-import com.shaneschulte.mc.clanarena.commands.ChallengeCmd;
+import com.shaneschulte.mc.clanarena.commands.*;
 import com.shaneschulte.mc.clanarena.utils.CmdProperties;
 import com.shaneschulte.mc.clanarena.utils.MsgUtils;
 import org.bukkit.command.Command;
@@ -23,6 +22,7 @@ public class CommandHandler implements CommandExecutor {
      */
     CommandHandler() {
         registerArgument(new ChallengeCmd());
+        registerArgument(new KitAddCmd());
         registerArgument(new BossbarCmd());
     }
 

@@ -1,6 +1,5 @@
 package com.shaneschulte.mc.clanarena.adapters;
 
-import com.shaneschulte.mc.clanarena.Group;
 import net.sacredlabyrinth.phaed.simpleclans.Clan;
 import net.sacredlabyrinth.phaed.simpleclans.SimpleClans;
 import net.sacredlabyrinth.phaed.simpleclans.managers.ClanManager;
@@ -10,7 +9,7 @@ import org.bukkit.OfflinePlayer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleClansAdapter implements IGroupAdapter {
+public class SimpleClansAdapter implements GroupAdapter {
 
     ClanManager clans;
 
@@ -19,13 +18,7 @@ public class SimpleClansAdapter implements IGroupAdapter {
     }
 
     private Group makeGroup(Clan clan) {
-        if(clan == null) return null;
-
-        Group result = new Group(clan.getName(), clan.getTag());
-        clan.getAllMembers().forEach(player ->
-                result.addMember(Bukkit.getOfflinePlayer(player.getUniqueId())));
-
-        return result;
+        return clan == null ? null : new SimpleClansGroup(clan);
     }
 
     @Override
@@ -39,9 +32,9 @@ public class SimpleClansAdapter implements IGroupAdapter {
     }
 
     @Override
-    public List<String> listGroupTags() {
-        List<String> results = new ArrayList<>();
-        clans.getClans().forEach(clan -> results.add(clan.getTag()));
+    public List<Group> listGroups() {
+        List<Group> results = new ArrayList<>();
+        clans.getClans().forEach(clan -> results.add(makeGroup(clan)));
         return results;
     }
 }

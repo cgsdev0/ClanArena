@@ -21,7 +21,7 @@ public class ClanArena extends JavaPlugin {
 
         // Register Events
         getServer().getPluginManager().registerEvents(new OnJoin(), this);
-        getServer().getPluginManager().registerEvents(new ClanArenaListener(this), this);
+        getServer().getPluginManager().registerEvents(new ClanArenaListener(), this);
 
         // Kits
         KitManager.loadLoadouts();
@@ -29,8 +29,6 @@ public class ClanArena extends JavaPlugin {
         // Register Commands
         this.getCommand("ClanArena").setExecutor(new CommandHandler());
         this.getCommand("ClanArena").setTabCompleter(new ConstructTabCompleter());
-
-        getServer().getPluginManager().registerEvents(new ClanArenaListener(this), this);
 
         // Console Output
         MsgUtils.log("~Commands registered!~");

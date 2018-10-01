@@ -55,7 +55,10 @@ public class RespawnHandler extends PacketAdapter {
 
             float health = event.getPacket().getFloat().read(0);
             if (Math.signum(health) != 1) {
-                player.spigot().respawn();
+
+                player.setHealth(20.0);
+                event.setCancelled(true);
+
                 group.members.remove(player);
                 spectators.addMember(player);
 

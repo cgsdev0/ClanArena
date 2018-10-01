@@ -3,7 +3,8 @@ authors: [CoolGamrSms, Hikeru]
 version: 1.0.0
 main: com.shaneschulte.mc.clanarena.ClanArena
 api-version: 1.13
-softdepend: [SimpleClans, Factions, Vault, McMMO, ProtocolLib]
+softdepend: [SimpleClans, Factions, Vault, McMMO]
+depend: [ProtocolLib]
 
 commands:
   ClanArena:

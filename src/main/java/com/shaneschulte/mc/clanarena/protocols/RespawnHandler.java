@@ -59,11 +59,9 @@ public class RespawnHandler extends PacketAdapter {
                 group.members.remove(player);
                 spectators.addMember(player);
 
-                Optional<OfflinePlayer> participant = group.members.stream().filter(member -> member.getPlayer().getGameMode() != GameMode.SPECTATOR).findFirst();
-                if (participant.isPresent()) {
+                if (group.members.size() > 0) {
                     player.setGameMode(GameMode.SPECTATOR);
-                    player.setSpectatorTarget(participant.get().getPlayer());
-
+                    player.setSpectatorTarget(group.members.get(0).getPlayer());
                 } else {
                     spectators.members.addAll(challengers.members);
                     spectators.members.addAll(opponents.members);
@@ -83,7 +81,6 @@ public class RespawnHandler extends PacketAdapter {
                             }
                         }
                     };
-
                     runnable.runTaskTimer(getPlugin(), 1, spectators.members.size());
                 }
             }

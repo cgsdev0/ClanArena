@@ -1,9 +1,10 @@
 package com.shaneschulte.mc.clanarena;
 
-import com.shaneschulte.mc.clanarena.commands.CreateCmd;
-import com.shaneschulte.mc.clanarena.events.OnJoin;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.shaneschulte.mc.clanarena.command.CommandHandler;
+import com.shaneschulte.mc.clanarena.listeners.PlayerJoinListener;
 import com.shaneschulte.mc.clanarena.inventory.KitManager;
-import com.shaneschulte.mc.clanarena.utils.ConstructTabCompleter;
+import com.shaneschulte.mc.clanarena.protocols.RespawnHandler;
 import com.shaneschulte.mc.clanarena.utils.MsgUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -15,16 +16,19 @@ public class ClanArena extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        // Register Events
-        getServer().getPluginManager().registerEvents(new OnJoin(), this);
-        getServer().getPluginManager().registerEvents(new CreateCmd(), this);
+        // Register Event Listeners
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
+
+        // Register Packet Listeners
+        ProtocolLibrary.getProtocolManager().addPacketListener(new RespawnHandler(this));
 
         // Kits
         KitManager.loadLoadouts();
 
         // Register Commands
-        this.getCommand("ClanArena").setExecutor(new CommandHandler());
-        this.getCommand("ClanArena").setTabCompleter(new ConstructTabCompleter());
+        CommandHandler handler = new CommandHandler();
+        this.getCommand("clanarena").setExecutor(handler);
+        this.getCommand("clanarena").setTabCompleter(handler);
 
         // Console Output
         MsgUtils.log("~Commands registered!~");

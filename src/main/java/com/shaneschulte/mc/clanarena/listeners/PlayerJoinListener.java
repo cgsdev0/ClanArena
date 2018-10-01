@@ -1,4 +1,4 @@
-package com.shaneschulte.mc.clanarena.events;
+package com.shaneschulte.mc.clanarena.listeners;
 
 import com.shaneschulte.mc.clanarena.utils.MsgUtils;
 import org.bukkit.Bukkit;
@@ -6,7 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class OnJoin implements Listener {
+public class PlayerJoinListener implements Listener {
 
     /**
      * login message, add dynamic content later

@@ -32,6 +32,7 @@ repositories {
     maven { url = 'http://maven.elmakers.com/repository/' }
     maven { url = 'https://repo.lucko.me/' }
     maven { url = 'https://repo.codemc.org/repository/maven-public/' }
+    maven { url "http://repo.dmulloy2.net/nexus/repository/public/" }
 }
 
 dependencies {
@@ -43,6 +44,7 @@ dependencies {
     compileOnly 'net.milkbowl.vault:VaultAPI:1.7'
     compileOnly 'com.gmail.nossr50.mcMMO:mcMMO:1.6.0-SNAPSHOT'
     compileOnly 'fr.minuskube.inv:smart-invs:1.2.4'
+    compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.4.0";
 }
 
 buildscript {

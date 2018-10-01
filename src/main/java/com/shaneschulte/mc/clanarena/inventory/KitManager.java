@@ -2,12 +2,19 @@ package com.shaneschulte.mc.clanarena.inventory;
 
 import com.shaneschulte.mc.clanarena.utils.MsgUtils;
 import com.shaneschulte.mc.clanarena.utils.FileUtils;
+import fr.minuskube.inv.SmartInventory;
+import javafx.util.Pair;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -21,6 +28,12 @@ public class KitManager {
     private static final String loadoutsFile = "kits.yml";
 
     private static boolean registered = false;
+    public static final SmartInventory kitMenu = SmartInventory.builder()
+            .id("customInventory")
+            .provider(new KitMenuProvider())
+            .size(4, 9)
+            .title(ChatColor.RED + "Choose a kit")
+            .build();
 
     /**
      * Give a kit to a player.
@@ -61,13 +74,25 @@ public class KitManager {
      * @param player player with desired kit
      * @param name unique name of the new kit
      */
-    public static void createKit(Player player, String name) {
+    public static void createKit(Player player, String name, Material icon) {
         if(loadoutKits.containsKey(name.toLowerCase())) {
             throw new IllegalArgumentException("Kit already exists: " + name);
         }
 
-        loadoutKits.put(name.toLowerCase(), new Kit(player));
+        loadoutKits.put(name.toLowerCase(), new Kit(player, icon));
         saveLoadouts();
+    }
+
+    public static Map<String, Kit> getLoadouts() {
+       return loadoutKits;
+    }
+
+    public static SmartInventory getKitView(Kit kit, String name, int returnPage) {
+        return SmartInventory.builder()
+                .provider(new KitViewProvider(kit, name, returnPage))
+                .size(6, 9)
+                .title("Kit: " + name)
+                .build();
     }
 
     public static void loadLoadouts() {
@@ -76,10 +101,12 @@ public class KitManager {
             registered = true;
         }
         FileUtils.saveDefaultFile(loadoutsFile);
-        FileConfiguration config = FileUtils.loadCustomFile(loadoutsFile);
-        config.getConfigurationSection("kits")
-                .getValues(true).forEach((name, obj) -> loadoutKits.put(name, (Kit)obj));
-        loadoutKits.forEach((name, kit) -> MsgUtils.log("Loaded kit: " + name));
+        ConfigurationSection config = FileUtils.loadCustomFile(loadoutsFile).getConfigurationSection("kits");
+        if(config != null) {
+            Map<String, Object> map = config.getValues(true);
+            map.forEach((name, obj) -> loadoutKits.put(name, (Kit) obj));
+            loadoutKits.forEach((name, kit) -> MsgUtils.log("Loaded kit: " + name));
+        }
     }
 
     public static void saveLoadouts() {

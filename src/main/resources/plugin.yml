@@ -4,10 +4,11 @@ version: 1.0.0
 main: com.shaneschulte.mc.clanarena.ClanArena
 api-version: 1.13
 softdepend: [SimpleClans, Factions, Vault, McMMO]
+depend: [ProtocolLib]
 
 commands:
   ClanArena:
     description: base ClanArena command
     usage: /ClanArena
     aliases: [ca, arena]
-    permission: commandarena.help
+    permission: clanarena.help

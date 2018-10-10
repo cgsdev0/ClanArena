@@ -46,10 +46,8 @@ public class ChallengeCmd implements CmdProperties, AutoCompletable, Listener {
             return;
         }
 
-        int groupSize = Integer.min(Integer.min(Integer.parseInt(args[2]), challengers.members.size()), opponents.members.size());
-        
-        challengers.members.removeIf(member -> challengers.members.size() > groupSize || !member.isOnline());
-        opponents.members.removeIf(member -> opponents.members.size() > groupSize || !member.isOnline());
+        challengers.members.removeIf(member -> !member.isOnline());
+        opponents.members.removeIf(member -> !member.isOnline());
 
         challengers.members.forEach(member -> {
             MsgUtils.sendMessage((CommandSender) member, "Challenging " + opponents.name);
@@ -67,6 +65,8 @@ public class ChallengeCmd implements CmdProperties, AutoCompletable, Listener {
             @Override
             public void run() {
                 ProtocolLibrary.getProtocolManager().removePacketListener(challengeHandler);
+
+                int groupSize = Integer.min(Integer.min(Integer.parseInt(args[2]), challengers.members.size()), opponents.members.size());
                 if (groupSize <= 0) {
                     MsgUtils.sendMessage(player, "Too few players");
                     return;
